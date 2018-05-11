@@ -4,6 +4,9 @@ This is a short step-by-step of how to set up a simple weather display with the 
 
 ![alt text](https://i.imgur.com/MVdSSnAl.jpg "The finished product")
 
+#### Disclaimer
+Use at your own risk. It should work fine, but I can't guarantee no bugs :)
+
 ## Equipment used
 * Raspberry Pi Zero W
 
