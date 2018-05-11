@@ -58,6 +58,8 @@ Then replace the example url with your url in the code!
 ## Running the code
 Copy the whole folder onto your Pi. Open terminal and navigate to the folder. Run the python script with 'python weather_display.py'
 
+Stop the code with keyboard interrupt Ctrl+C in the terminal.
+
 ## Make it your own
 Feel free to edit the display or change the data it displays as you please. You can easily access anything in the .xml file by calling the correct tree:
 ```python
