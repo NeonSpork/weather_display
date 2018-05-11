@@ -34,7 +34,7 @@ All the libraries in this code should be built in to python, but in case you nee
 Once the necessary libraries are set up for the display, you *should* be able to just copy the entire file onto your pi and run the python script. Make sure you also copy the 'yr_icons' folder, since that's where the code grabs the icons from. The icons were also graciously provided by Yr, I just processed them slightly to make them work better with the e-Paper display. *Sidenote: if you do improve upon the icons in any way or notice something off, let me know!*
 
 ### Setting up the font
-You can use any .ttf font that tickles your fancy, but you may need to tweak the code. I chose Arial for my display because I enjoy how it looks. The .ttf file is included in the repository, and it needs to be copied to **/usr/share/fonts/truetype/freefont** on your Pi.
+You can use any .ttf font that tickles your fancy, but you may need to tweak the code. I chose Arial for my display because I enjoy how it looks. The FreeArial.ttf file is included in the repository, and it needs to be copied to **/usr/share/fonts/truetype/freefont** on your Pi.
 
 ### Weather data
 This code uses weather data from yr.no (a collaboration between the Norwegian Meteorological Institute and the National Broadcasting Channel in Norway). They publish their data for free, but with the caveat that you follow their user requirements [found here.](http://om.yr.no/info/verdata/free-weather-data/ "Information about the free weather data service")
@@ -42,7 +42,9 @@ This code uses weather data from yr.no (a collaboration between the Norwegian Me
 Search for your desired location on yr.no, then add "forecast.xml" to the end of the url.
 
 Example:
+
 Weather page for the South Pole https://www.yr.no/place/Antarctica/Other/South_Pole~6942239/
+
 XML file for the South Pole https://www.yr.no/place/Antarctica/Other/South_Pole~6942239/forecast.xml
 
 ## Running the code
