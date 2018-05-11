@@ -1,12 +1,8 @@
 """Weather e-ink display.
 
-JB "neonSpork" Leiknes
-
 Weather forecast from Yr, delivered by the
 Norwegian Meteorological Institute and NRK.
 
-Code for Waveshare display available at
-https://www.waveshare.com/wiki/
 This code is specifically written for the
 2.7 inch e-ink display, but can easily be
 modified to fit another size.
