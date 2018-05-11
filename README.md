@@ -25,6 +25,7 @@ I did this on a bog standard Raspian install.
 ### Setting up the e-Paper display
 I followed the step by step instructions on Waveshare's wiki:
 https://www.waveshare.com/wiki/Pioneer600#Libraries_Installation_for_RPi
+
 Fairly straight forward step-by-step that worked without a hitch for me.
 
 ### Installing libraries for the code
