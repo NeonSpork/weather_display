@@ -55,9 +55,9 @@ bigfont = ImageFont.truetype(
 
 def frameUpdate():
     # Opens the .xml file from yr.no
-    # Replace "Skeiane" with desired location
+    # YOUR URL WITH YOUR DESIRED LOCATION GOES HERE
     f = urllib2.urlopen(
-        'https://www.yr.no/place/Norge/Rogaland/Sandnes/Skeiane/forecast.xml')
+        'https://www.yr.no/place/Antarctica/Other/South_Pole~6942239/forecast.xml')
     yr_online = f.read()
     # Parses xml file into strings
     root = ET.fromstring(yr_online)
