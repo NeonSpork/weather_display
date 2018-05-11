@@ -50,5 +50,7 @@ Weather page for the South Pole https://www.yr.no/place/Antarctica/Other/South_P
 
 XML file for the South Pole https://www.yr.no/place/Antarctica/Other/South_Pole~6942239/forecast.xml
 
+Then replace the example url with your url in the code!
+
 ## Running the code
 Copy the whole folder onto your Pi. Open terminal and navigate to the folder. Run the python script with 'python weather_display.py'
