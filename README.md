@@ -72,7 +72,7 @@ $ mkdir logs
 ```
 Open crontab.
 ```
-sudo crontab -e
+$ sudo crontab -e
 ```
 Add the following line, replacing YOUR_FOLDER with whatever directory you placed the weather_display folder in:
 ```
@@ -83,7 +83,7 @@ The launcher shell will navigate to the correct folder and run the python script
 
 Once that is done, it's necessary to enable the option to delay boot until network is established (otherwise you get weird errors).
 ```
-sudo raspi-config
+$ sudo raspi-config
 ```
 Then navigate to option 3 - Boot options
 
