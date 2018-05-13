@@ -68,3 +68,7 @@ root[#][#][#][#].attrib['variableName']
 ```
 
 Make a cool case or something to make it look smooth for bonus points! Have fun!
+
+## TODO
+* Do something to indicate an error has occurred, for example if urllub2 raises and urlopen error
+* Maybe find a clever way to graphically display precipitation
