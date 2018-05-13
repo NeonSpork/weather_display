@@ -2,6 +2,8 @@
 
 This is a short step-by-step of how to set up a simple weather display with the 2.7 inch Waveshare display. The python code only runs in python 2 because the Waveshare people wrote their library in python 2, and I don't see the point in wasting time converting it to python 3.X when it works just fine.
 
+Also this is only in metric. Sorry I'm not sorry.
+
 ![alt text](https://i.imgur.com/MVdSSnAl.jpg "The finished product")
 
 #### Disclaimer
@@ -56,9 +58,40 @@ XML file for the South Pole https://www.yr.no/place/Antarctica/Other/South_Pole~
 Then replace the example url with your url in the code!
 
 ## Running the code
-Copy the whole folder onto your Pi. Open terminal and navigate to the folder. Run the python script with 'python weather_display.py'
-
+Copy the whole folder onto your Pi.
+### Option 1
+Open terminal and navigate to the folder. Run the python script with 'python weather_display.py'
 Stop the code with keyboard interrupt Ctrl+C in the terminal.
+### Option 2
+Use the launcher.sh script to start the python script automatically at reboot:
+
+First make a logs directory. Open the terminal and navigate to the weather_display folder and make the directory.
+```
+$ cd /home/Pi/YOUR_FOLDER/weather_display
+$ mkdir logs
+```
+Open crontab.
+```
+sudo crontab -e
+```
+Add the following line, replacing YOUR_FOLDER with whatever directory you placed the weather_display folder in:
+```
+@reboot sh /home/pi/YOUR_FOLDER/weather_display/launcher.sh >/home/pi/YOUR_FOLDER/weather_display/logs/cronlog 2>&1
+```
+Then hit Ctrl+X to save, Y to confirm and Enter to exit.
+The launcher shell will navigate to the correct folder and run the python script. If for whatever reason it doesn't work, the errors will be logged in a text file in /weather_display/logs.
+
+Once that is done, it's necessary to enable the option to delay boot until network is established (otherwise you get weird errors).
+```
+sudo raspi-config
+```
+Then navigate to option 3 - Boot options
+![alt text](https://i.imgur.com/l7dhtTOm.png "Raspi-config option 3")
+Turn on the option to wait for network at boot.
+![alt text](https://i.imgur.com/9Rm3Gfvm.png "Wait for network")
+Hit finish and reboot.
+
+If you need to stop the script for whatever reason while using Option 2 you'll need to either use VNC and kill it via the task manager or via terminal by for example using the ps -A command and killing the python script.
 
 ## Make it your own
 Feel free to edit the display or change the data it displays as you please. You can easily access anything in the .xml file by calling the correct tree:
