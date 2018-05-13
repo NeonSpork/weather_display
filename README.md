@@ -86,9 +86,13 @@ Once that is done, it's necessary to enable the option to delay boot until netwo
 sudo raspi-config
 ```
 Then navigate to option 3 - Boot options
-![alt text](https://i.imgur.com/l7dhtTOm.png "Raspi-config option 3")
+
+![alt text](https://i.imgur.com/l7dhtTOl.png "Raspi-config option 3")
+
 Turn on the option to wait for network at boot.
-![alt text](https://i.imgur.com/9Rm3Gfvm.png "Wait for network")
+
+![alt text](https://i.imgur.com/9Rm3Gfvl.png "Wait for network")
+
 Hit finish and reboot.
 
 If you need to stop the script for whatever reason while using Option 2 you'll need to either use VNC and kill it via the task manager or via terminal by for example using the ps -A command and killing the python script.
