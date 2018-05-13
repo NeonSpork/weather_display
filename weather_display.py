@@ -35,6 +35,8 @@ epd.init()
 EPD_WIDTH = epd2in7.EPD_WIDTH  # 176 pixels
 EPD_HEIGHT = epd2in7.EPD_HEIGHT  # 264 pixels
 # Fonts
+teenytinyfont = ImageFont.truetype(
+    '/usr/share/fonts/truetype/freefont/FreeArial.ttf', 10)
 teenyfont = ImageFont.truetype(
     '/usr/share/fonts/truetype/freefont/FreeArial.ttf', 12)
 tinyfont = ImageFont.truetype(
@@ -52,8 +54,15 @@ bigfont = ImageFont.truetype(
 def frameUpdate():
     # Opens the .xml file from yr.no
     # YOUR URL WITH YOUR DESIRED LOCATION GOES HERE
-    f = urllib2.urlopen(
-        'https://www.yr.no/place/Antarctica/Other/South_Pole~6942239/forecast.xml')
+    # While not loop should prevent the program from crashing if the internet goes out intermittently
+    urlReady = False
+    while not urlReady:
+        try:
+            f = urllib2.urlopen(
+                'https://www.yr.no/place/Norge/Rogaland/Sandnes/Skeiane/forecast.xml')
+            urlReady = True
+        except:
+            urlReady = False
     yr_online = f.read()
     # Parses xml file into strings
     root = ET.fromstring(yr_online)
@@ -61,6 +70,7 @@ def frameUpdate():
     # Temperature related variables:
     # Five total periods: current temperature, and the four next
     # 6 hour periods. (FirstPeriod, SecondPeriod, etc)
+    lastUpdatedTime = time.strftime('%H:%M')
     currentTemperature = root[5][1][0][4].attrib['value']
     timeFirstPeriodStart = root[5][1][1].attrib['from'][11:13]
     timeFirstPeriodEnd = root[5][1][1].attrib['to'][11:13]
@@ -120,6 +130,8 @@ def frameUpdate():
         draw.text((98, 5), '{}'.format(negativeCurrentTemp),
                   font=bigfont, fill=0)
         draw.text((98, 75), 'BELOW ZERO', font=teenyfont, fill=0)
+    draw.text((100, 0), 'Updated: {}'.format(lastUpdatedTime),
+              font=teenytinyfont, fill=0)
     wrappedStatus = textwrap.fill(currentStatus, 16)
     draw.text((5, 100), '{}'.format(wrappedStatus), font=normalfont, fill=0)
     draw.line((0, 155, 176, 155), fill=0, width=2)
