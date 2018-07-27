@@ -17,6 +17,7 @@ import ImageFont
 import ImageDraw
 import urllib2
 import xml.etree.ElementTree as ET
+import gc
 
 
 """Need to initialize the display so the
@@ -61,8 +62,11 @@ def frameUpdate():
             f = urllib2.urlopen(
                 'https://www.yr.no/place/Norge/Rogaland/Sandnes/Skeiane/forecast.xml')
             urlReady = True
+            if urlReady:
+                print('Url open successful.')
         except:
             urlReady = False
+            print('Error: Could not open url.')
     yr_online = f.read()
     # Parses xml file into strings
     root = ET.fromstring(yr_online)
@@ -70,7 +74,7 @@ def frameUpdate():
     # Temperature related variables:
     # Five total periods: current temperature, and the four next
     # 6 hour periods. (FirstPeriod, SecondPeriod, etc)
-    lastUpdatedTime = time.strftime('%H:%M')
+    lastUpdatedTime = time.strftime('%a %H:%M')
     currentTemperature = root[5][1][0][4].attrib['value']
     timeFirstPeriodStart = root[5][1][1].attrib['from'][11:13]
     timeFirstPeriodEnd = root[5][1][1].attrib['to'][11:13]
@@ -92,6 +96,7 @@ def frameUpdate():
     # Weather conditions and various icons
     currentIcon = root[5][1][0][0].attrib['var']
     unconvertedIcon = Image.open('yr_icons/{}.png'.format(currentIcon))
+    refreshIcon = Image.open('yr_icons/refresh.png')
     conditionIcon = unconvertedIcon.convert('L')
     currentStatus = root[5][1][0][0].attrib['name']
     fullSunriseTimeStamp = root[4].attrib['rise']
@@ -130,7 +135,8 @@ def frameUpdate():
         draw.text((98, 5), '{}'.format(negativeCurrentTemp),
                   font=bigfont, fill=0)
         draw.text((98, 75), 'BELOW ZERO', font=teenyfont, fill=0)
-    draw.text((100, 0), 'Updated: {}'.format(lastUpdatedTime),
+    mask.paste(refreshIcon, (85, 0))
+    draw.text((100, 0), '{}'.format(lastUpdatedTime),
               font=teenytinyfont, fill=0)
     wrappedStatus = textwrap.fill(currentStatus, 16)
     draw.text((5, 100), '{}'.format(wrappedStatus), font=normalfont, fill=0)
@@ -178,5 +184,7 @@ if __name__ == '__main__':
     running = True
     while running:
         frameUpdate()
+        print('Refreshed successfully at {}'.format(time.strftime('%d%m%y-%H:%M')))
+        gc.collect()
         time.sleep(600)
         # loops every 10 minutes and reupdates
