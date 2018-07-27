@@ -7,7 +7,7 @@ Also this is only in metric. Sorry I'm not sorry.
 ![alt text](https://i.imgur.com/MVdSSnAl.jpg "The finished product")
 
 #### Disclaimer
-Use at your own risk. It should work fine, but I can't guarantee no bugs :) Also, I'm fairly new to python and coding in general so go easy on me.
+Use at your own risk. It should work fine, but I can't guarantee no bugs :)
 
 ## Equipment used
 * Raspberry Pi Zero W
