@@ -1,6 +1,6 @@
 # Weather display
 
-This is a short step-by-step of how to set up a simple weather display with the 2.7 inch Waveshare display. The python code only runs in python 2 because the Waveshare people wrote their library in python 2, and I don't see the point in wasting time converting it to python 3.X when it works just fine.
+This is a short step-by-step of how to set up a simple weather display with the 2.7 inch Waveshare display. The python code only runs in python 2 for now.
 
 Also this is only in metric. Sorry I'm not sorry.
 
