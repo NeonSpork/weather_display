@@ -17,7 +17,6 @@ import ImageFont
 import ImageDraw
 import urllib2
 import xml.etree.ElementTree as ET
-import gc
 
 
 """Need to initialize the display so the
@@ -185,6 +184,5 @@ if __name__ == '__main__':
     while running:
         frameUpdate()
         print('Refreshed successfully at {}'.format(time.strftime('%d%m%y-%H:%M')))
-        gc.collect()
         time.sleep(600)
         # loops every 10 minutes and reupdates
