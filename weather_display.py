@@ -59,7 +59,7 @@ def frameUpdate():
     while not urlReady:
         try:
             f = urllib2.urlopen(
-                'https://www.yr.no/place/Norge/Rogaland/Sandnes/Skeiane/forecast.xml')
+                'https://www.yr.no/place/Antarctica/Other/South_Pole~6269204/forecast.xml')
             urlReady = True
             if urlReady:
                 print('Url open successful.')
