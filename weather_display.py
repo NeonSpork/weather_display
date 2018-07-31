@@ -15,7 +15,7 @@ import epd2in7
 import Image
 import ImageFont
 import ImageDraw
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import xml.etree.ElementTree as ET
 
 
@@ -58,7 +58,7 @@ def frameUpdate():
     urlReady = False
     while not urlReady:
         try:
-            f = urllib2.urlopen(
+            f = urllib.request.urlopen(
                 'https://www.yr.no/place/Antarctica/Other/South_Pole~6269204/forecast.xml')
             urlReady = True
             if urlReady:
@@ -186,6 +186,6 @@ if __name__ == '__main__':
     running = True
     while running:
         frameUpdate()
-        print('Refreshed successfully at {}'.format(time.strftime('%d%m%y-%H:%M')))
+        print(('Refreshed successfully at {}'.format(time.strftime('%d%m%y-%H:%M'))))
         time.sleep(600)
         # loops every 10 minutes and reupdates
