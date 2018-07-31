@@ -12,10 +12,15 @@ modified to fit another size.
 import time
 import textwrap
 import epd2in7
+<<<<<<< HEAD
 import Image
 import ImageFont
 import ImageDraw
 import urllib2
+=======
+from PIL import Image, ImageFont, ImageDraw
+import urllib.request, urllib.error, urllib.parse
+>>>>>>> f3f2eab0fa3d2683fcef1f746494d115a82a1707
 import xml.etree.ElementTree as ET
 
 
