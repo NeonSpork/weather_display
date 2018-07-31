@@ -65,7 +65,10 @@ def frameUpdate():
                 print('Url open successful.')
         except:
             urlReady = False
-            print('Error: Could not open url.')
+            draw.text((25, 100), 'Url error, retrying.')
+            draw.text((40, 100), time.strftime('%d%m%y-%H:%M:%S'))
+            rotatedMask = mask.rotate(180)
+            epd.display_frame(epd.get_frame_buffer(rotatedMask))
     yr_online = f.read()
     # Parses xml file into strings
     root = ET.fromstring(yr_online)
