@@ -51,6 +51,9 @@ Once the necessary libraries are set up for the display, you *should* be able to
 
 ### Setting up the font
 You can use any .ttf font that tickles your fancy, but you may need to tweak the code. I chose Arial for my display because I enjoy how it looks. The FreeArial.ttf file is included in the repository, and it needs to be copied to **/usr/share/fonts/truetype/freefont** on your Pi.
+```
+$ sudo cp FreeArial.ttf /usr/share/fonts/truetype/freefont
+```
 
 ### Weather data
 This code uses weather data from yr.no (a collaboration between the Norwegian Meteorological Institute and the National Broadcasting Channel in Norway). They publish their data for free, but with the caveat that you follow their user requirements [found here.](http://om.yr.no/info/verdata/free-weather-data/ "Information about the free weather data service")
