@@ -38,6 +38,14 @@ Fairly straight forward step-by-step that worked without a hitch for me.
 ### Installing libraries for the code
 All the libraries in this code should be built in to python, but in case you need any you should be able to install them via pip.
 
+IMPORTANT - Make sure your Raspberry Pi has SPI enabled:
+```
+$ sudo raspi-config
+```
+Go to 5 Interfacing options
+P4 SPI - Enable/disable
+Choose Enable, confirm and exit.
+
 ### Copying the code
 Once the necessary libraries are set up for the display, you *should* be able to just copy the entire file onto your pi and run the python script. Make sure you also copy the 'yr_icons' folder, since that's where the code grabs the icons from. The icons were also graciously provided by Yr, I just processed them slightly to make them work better with the e-Paper display. *Sidenote: if you do improve upon the icons in any way or notice something off, let me know!*
 
