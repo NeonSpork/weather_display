@@ -199,7 +199,20 @@ def printMaskToEinkScreen():
     epd.display_frame(epd.get_frame_buffer(rotatedMask))
     print('Refreshed successfully at {}'.format(time.strftime('%d%m%y-%H:%M')))
 
+
+def setUpErrorLogging():
+    logging.basicConfig(filename="{}/logs/weather.log".format(os.getcwd()),
+                        filemode='a',
+                        level=logging.DEBUG,
+                        format='%(asctime)s - %(levelname)s - %(message)s',
+                        )
+
+
+def logError(e):
+    logging.error("{} ({}): {}".format(e.__class__, e.__doc__, e.message))
+
 if __name__ == '__main__':
+    setUpErrorLogging()
     running = True
     while running:
         try:
@@ -209,6 +222,4 @@ if __name__ == '__main__':
             time.sleep(600)
             # loops every 10 minutes and reupdates
         except Exception as e:
-            cwd = os.getcwd()
-            log = open('{}/logs/logs.txt'.format(cwd), 'a')
-            log.write(e)
+            logError(e)
