@@ -62,22 +62,25 @@ def updateXmlUrl():
     the url is updated.
     """
     attempts = 1
-    try:
-        xmlUrl = urllib2.urlopen(
-            'https://www.yr.no/place/Antarctica/Other/South_Pole~6269204/forecast.xml')
-        # Exchange the link above with your location.
-        xmlString = xmlUrl.read()
-        break
-    except:
-        if attempts <= 10:
-            print('Error opening url, retrying in 15 seconds.'
-                  ' (Attempt {} of 10)'.format(attempts))
-            attempts += 1
-            time.sleep(15)
-        else:
-            raise RuntimeError('Please check your internet connection '
-                               'and restart the program.')
-    
+    urlReady = False
+    while not urlReady:
+        try:
+            xmlUrl = urllib2.urlopen(
+                'https://www.yr.no/place/Norge/Rogaland/Sandnes/Skeiane/forecast.xml')
+            # Exchange the link above with your location.
+            print('XML successfully opened.')
+            urlReady = True
+        except:
+            if attempts <= 10:
+                print('Error opening url, retrying in 15 seconds.'
+                      ' (Attempt {} of 10)'.format(attempts))
+                attempts += 1
+                time.sleep(15)
+            elif attempts > 10:
+                raise RuntimeError('Please check your internet connection '
+                                   'and restart the program.')
+    global xmlString
+    xmlString = xmlUrl.read()
 
 
 def parseXmlAndDrawToMask():
@@ -87,7 +90,7 @@ def parseXmlAndDrawToMask():
     Also handles the opening of image files and draws everything to the
     mask that will be drawn on the E-ink screen.
     """
-    root = ET.fromstring(updateXmlUrl.xmlString)
+    root = ET.fromstring(xmlString)
 
     # Temperature related variables:
     # Five total periods: current temperature, and the four next
@@ -136,6 +139,7 @@ def parseXmlAndDrawToMask():
 
     # Coordinates are X, Y:
     # 0, 0 is top left of screen 176, 264 is bottom right
+    global mask
     mask = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 255)
     # 255: clear the image with white
     draw = ImageDraw.Draw(mask)
@@ -193,19 +197,21 @@ def parseXmlAndDrawToMask():
     draw.text((40, 244), '{}'.format(sunriseTime), font=smallfont, fill=0)
     draw.text((128, 244), '{}'.format(sunsetTime), font=smallfont, fill=0)
 
+    print('Successfully parsed XML file and created mask. {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
+
 
 def printMaskToEinkScreen():
-    rotatedMask = printMaskToEinkScreen.mask.rotate(180)
+    rotatedMask = mask.rotate(180)
     # Turns mask upside down, this just happened to work best for my frame
     # with regards to which side the cable came out.
     epd.display_frame(epd.get_frame_buffer(rotatedMask))
-    print('Refreshed successfully at {}'.format(time.strftime('%d%m%y-%H:%M')))
+    print('Weather display successfully refreshed at {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
 
 
 def setUpErrorLogging():
     logging.basicConfig(filename="{}/logs/weather.log".format(os.getcwd()),
-                        filemode='a',
-                        level=logging.DEBUG,
+                        filemode='w',
+                        level=logging.ERROR,
                         format='%(asctime)s - %(levelname)s - %(message)s',
                         )
 
@@ -219,9 +225,18 @@ if __name__ == '__main__':
     while running:
         try:
             updateXmlUrl()
-            parseXmlAndDrawToMask()
-            printMaskToEinkScreen()
-            time.sleep(600)
-            # loops every 10 minutes and reupdates
         except Exception as e:
             logError(e)
+            print(e)
+        try:
+            parseXmlAndDrawToMask()
+        except Exception as e:
+            logError(e)
+            print(e)
+        try:
+            printMaskToEinkScreen()
+        except Exception as e:
+            logError (e)
+            print(e)
+        time.sleep(600)
+        # Refreshes every 10 minutes
