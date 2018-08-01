@@ -92,34 +92,42 @@ def parseXmlAndDrawToMask():
     """
     root = ET.fromstring(xmlString)
 
+    # The following changes the root if the country is not Norway
+    # Since less detailed information is published, changing
+    # country results in an IndexError.
+    if root[0][2].attrib['country'] == "Norway":
+        secondRoot = 1
+    else:
+        secondRoot = 0
+
     # Temperature related variables:
     # Five total periods: current temperature, and the four next
     # 6 hour periods. (FirstPeriod, SecondPeriod, etc)
     lastUpdated = time.strftime('%a %d.%m %H:%M')
-    currentTemperature = root[5][1][0][4].attrib['value']
-    timeFirstPeriodStart = root[5][1][1].attrib['from'][11:13]
-    timeFirstPeriodEnd = root[5][1][1].attrib['to'][11:13]
-    tempFirstPeriod = root[5][1][1][4].attrib['value']
-    iconFirstPeriod = root[5][1][1][0].attrib['var']
-    timeSecondPeriodStart = root[5][1][2].attrib['from'][11:13]
-    timeSecondPeriodEnd = root[5][1][2].attrib['to'][11:13]
-    tempSecondPeriod = root[5][1][2][4].attrib['value']
-    iconSecondPeriod = root[5][1][2][0].attrib['var']
-    timeThirdPeriodStart = root[5][1][3].attrib['from'][11:13]
-    timeThirdPeriodEnd = root[5][1][3].attrib['to'][11:13]
-    tempThirdPeriod = root[5][1][3][4].attrib['value']
-    iconThirdPeriod = root[5][1][3][0].attrib['var']
-    timeFourthPeriodStart = root[5][1][4].attrib['from'][11:13]
-    timeFourthPeriodEnd = root[5][1][4].attrib['to'][11:13]
-    tempFourthPeriod = root[5][1][4][4].attrib['value']
-    iconFourthPeriod = root[5][1][4][0].attrib['var']
+    currentTemperature = root[5][secondRoot][0][4].attrib['value']
+    timeFirstPeriodStart = root[5][secondRoot][1].attrib['from'][11:13]
+    timeFirstPeriodEnd = root[5][secondRoot][1].attrib['to'][11:13]
+    tempFirstPeriod = root[5][secondRoot][1][4].attrib['value']
+    iconFirstPeriod = root[5][secondRoot][1][0].attrib['var']
+    timeSecondPeriodStart = root[5][secondRoot][2].attrib['from'][11:13]
+    timeSecondPeriodEnd = root[5][secondRoot][2].attrib['to'][11:13]
+    tempSecondPeriod = root[5][secondRoot][2][4].attrib['value']
+    iconSecondPeriod = root[5][secondRoot][2][0].attrib['var']
+    timeThirdPeriodStart = root[5][secondRoot][3].attrib['from'][11:13]
+    timeThirdPeriodEnd = root[5][secondRoot][3].attrib['to'][11:13]
+    tempThirdPeriod = root[5][secondRoot][3][4].attrib['value']
+    iconThirdPeriod = root[5][secondRoot][3][0].attrib['var']
+    timeFourthPeriodStart = root[5][secondRoot][4].attrib['from'][11:13]
+    timeFourthPeriodEnd = root[5][secondRoot][4].attrib['to'][11:13]
+    tempFourthPeriod = root[5][secondRoot][4][4].attrib['value']
+    iconFourthPeriod = root[5][secondRoot][4][0].attrib['var']
 
     # Weather conditions and various icons
-    currentIcon = root[5][1][0][0].attrib['var']
+    currentIcon = root[5][secondRoot][0][0].attrib['var']
     unconvertedIcon = Image.open('yr_icons/{}.png'.format(currentIcon))
     refreshIcon = Image.open('yr_icons/refresh.png')
     conditionIcon = unconvertedIcon.convert('L')
-    currentStatus = root[5][1][0][0].attrib['name']
+    currentStatus = root[5][secondRoot][0][0].attrib['name']
     fullSunriseTimeStamp = root[4].attrib['rise']
     fullSunsetTimeStamp = root[4].attrib['set']
     sunriseTime = fullSunriseTimeStamp[11:16]
@@ -133,9 +141,9 @@ def parseXmlAndDrawToMask():
     icon4 = Image.open('yr_icons/{}.png'.format(iconFourthPeriod))
 
     # Wind information
-    windSpeed = root[5][1][0][3].attrib['mps']
-    windBeaufort = root[5][1][0][3].attrib['name']
-    windDirection = root[5][1][0][2].attrib['name']
+    windSpeed = root[5][secondRoot][0][3].attrib['mps']
+    windBeaufort = root[5][secondRoot][0][3].attrib['name']
+    windDirection = root[5][secondRoot][0][2].attrib['name']
 
     # Coordinates are X, Y:
     # 0, 0 is top left of screen 176, 264 is bottom right
