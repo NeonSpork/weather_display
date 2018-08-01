@@ -210,5 +210,5 @@ if __name__ == '__main__':
             # loops every 10 minutes and reupdates
         except Exception as e:
             cwd = os.getcwd()
-            log = open('{}/logs/logs.txt', 'a')
+            log = open('{}/logs/logs.txt'.format(cwd), 'a')
             log.write(e)
