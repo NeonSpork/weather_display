@@ -99,6 +99,7 @@ def parseXmlAndDrawToMask():
         secondRoot = 1
     else:
         secondRoot = 0
+    location = root[0][0]
 
     # Temperature related variables:
     # Five total periods: current temperature, and the four next
@@ -165,8 +166,10 @@ def parseXmlAndDrawToMask():
         draw.text((98, 5), '{}'.format(negativeCurrentTemp),
                   font=bigfont, fill=0)
         draw.text((98, 75), 'BELOW ZERO', font=teenyfont, fill=0)
-    mask.paste(refreshIcon, (90, 0))
-    draw.text((105, 0), '{}'.format(lastUpdated),
+    draw.text((75, 0), '{}'.format(location), font=tinyfont, fill=0)
+
+    mask.paste(refreshIcon, (75, 142))
+    draw.text((90, 145), '{}'.format(lastUpdated),
               font=teenytinyfont, fill=0)
     wrappedStatus = textwrap.fill(currentStatus, 16)
     draw.text((5, 100), '{}'.format(wrappedStatus), font=normalfont, fill=0)
