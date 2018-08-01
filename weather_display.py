@@ -66,7 +66,7 @@ def updateXmlUrl():
     while not urlReady:
         try:
             xmlUrl = urllib2.urlopen(
-                'https://www.yr.no/place/Norge/Rogaland/Sandnes/Skeiane/forecast.xml')
+                'https://www.yr.no/place/USA/New_York/New_York/forecast.xml')
             # Exchange the link above with your location.
             print('XML successfully opened.')
             urlReady = True
