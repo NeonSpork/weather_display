@@ -10,6 +10,8 @@ modified to fit another size.
 
 
 import time
+import logging
+import os
 import textwrap
 import epd2in7
 import Image
@@ -51,32 +53,44 @@ bigfont = ImageFont.truetype(
     '/usr/share/fonts/truetype/freefont/FreeArial.ttf', 70)
 
 
-def frameUpdate():
-    # Opens the .xml file from yr.no
-    # YOUR URL WITH YOUR DESIRED LOCATION GOES HERE
-    # While not loop should prevent the program from crashing if the internet goes out intermittently
-    urlReady = False
-    while not urlReady:
-        try:
-            f = urllib2.urlopen(
-                'https://www.yr.no/place/Antarctica/Other/South_Pole~6269204/forecast.xml')
-            urlReady = True
-            if urlReady:
-                print('Url open successful.')
-        except:
-            urlReady = False
-            draw.text((25, 100), 'Url error, retrying.')
-            draw.text((40, 100), time.strftime('%d%m%y-%H:%M:%S'))
-            rotatedMask = mask.rotate(180)
-            epd.display_frame(epd.get_frame_buffer(rotatedMask))
-    yr_online = f.read()
-    # Parses xml file into strings
-    root = ET.fromstring(yr_online)
+def updateXmlUrl():
+    """Opens the .xml file from www.yr.no
+
+    Opens url and handles the processing of the .xml file
+    with ElementTree. Should be called every time you update
+    the frame since the information won't be refreshed unless
+    the url is updated.
+    """
+    attempts = 1
+    try:
+        xmlUrl = urllib2.urlopen(
+            'https://www.yr.no/place/Antarctica/Other/South_Pole~6269204/forecast.xml')
+        # Exchange the link above with your location.
+    except:
+        if attempts <= 10:
+            print('Error opening url, retrying in 15 seconds.'
+                  ' (Attempt {} of 10)'.format(attempts))
+            attempts += 1
+            time.sleep(15)
+        else:
+            raise RuntimeError('Please check your internet connection '
+                               'and restart the program.')
+    xmlString = xmlUrl.read()
+
+
+def parseXmlAndDrawToMask():
+    """Parses xml file into strings.
+
+    Handles the expansion of the xml root into their respective variables.
+    Also handles the opening of image files and draws everything to the
+    mask that will be drawn on the E-ink screen.
+    """
+    root = ET.fromstring(updateXmlUrl.xmlString)
 
     # Temperature related variables:
     # Five total periods: current temperature, and the four next
     # 6 hour periods. (FirstPeriod, SecondPeriod, etc)
-    lastUpdatedTime = time.strftime('%a %H:%M')
+    lastUpdated = time.strftime('%a %d.%m %H:%M')
     currentTemperature = root[5][1][0][4].attrib['value']
     timeFirstPeriodStart = root[5][1][1].attrib['from'][11:13]
     timeFirstPeriodEnd = root[5][1][1].attrib['to'][11:13]
@@ -137,8 +151,8 @@ def frameUpdate():
         draw.text((98, 5), '{}'.format(negativeCurrentTemp),
                   font=bigfont, fill=0)
         draw.text((98, 75), 'BELOW ZERO', font=teenyfont, fill=0)
-    mask.paste(refreshIcon, (85, 0))
-    draw.text((100, 0), '{}'.format(lastUpdatedTime),
+    mask.paste(refreshIcon, (90, 0))
+    draw.text((105, 0), '{}'.format(lastUpdated),
               font=teenytinyfont, fill=0)
     wrappedStatus = textwrap.fill(currentStatus, 16)
     draw.text((5, 100), '{}'.format(wrappedStatus), font=normalfont, fill=0)
@@ -177,15 +191,24 @@ def frameUpdate():
     draw.text((40, 244), '{}'.format(sunriseTime), font=smallfont, fill=0)
     draw.text((128, 244), '{}'.format(sunsetTime), font=smallfont, fill=0)
 
-    rotatedMask = mask.rotate(180)
+
+def printMaskToEinkScreen():
+    rotatedMask = printMaskToEinkScreen.mask.rotate(180)
     # Turns mask upside down, this just happened to work best for my frame
     # with regards to which side the cable came out.
     epd.display_frame(epd.get_frame_buffer(rotatedMask))
+    print('Refreshed successfully at {}'.format(time.strftime('%d%m%y-%H:%M')))
 
 if __name__ == '__main__':
     running = True
     while running:
-        frameUpdate()
-        print('Refreshed successfully at {}'.format(time.strftime('%d%m%y-%H:%M')))
-        time.sleep(600)
-        # loops every 10 minutes and reupdates
+        try:
+            updateXmlUrl()
+            parseXmlAndDrawToMask()
+            printMaskToEinkScreen()
+            time.sleep(600)
+            # loops every 10 minutes and reupdates
+        except Exception as e:
+            cwd = os.getcwd()
+            log = open('{}/logs/logs.txt', 'a')
+            log.write(e)
