@@ -166,7 +166,7 @@ def parseXmlAndDrawToMask():
         draw.text((98, 5), '{}'.format(negativeCurrentTemp),
                   font=bigfont, fill=0)
         draw.text((98, 75), 'BELOW ZERO', font=teenyfont, fill=0)
-    draw.text((75, 0), '{}'.format(location), font=tinyfont, fill=0)
+    draw.text((100, 0), '{}'.format(location), font=tinyfont, fill=0)
 
     mask.paste(refreshIcon, (80, 142))
     draw.text((95, 143), '{}'.format(lastUpdated),
