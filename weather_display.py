@@ -66,6 +66,8 @@ def updateXmlUrl():
         xmlUrl = urllib2.urlopen(
             'https://www.yr.no/place/Antarctica/Other/South_Pole~6269204/forecast.xml')
         # Exchange the link above with your location.
+        xmlString = xmlUrl.read()
+        break
     except:
         if attempts <= 10:
             print('Error opening url, retrying in 15 seconds.'
@@ -75,7 +77,7 @@ def updateXmlUrl():
         else:
             raise RuntimeError('Please check your internet connection '
                                'and restart the program.')
-    xmlString = xmlUrl.read()
+    
 
 
 def parseXmlAndDrawToMask():
