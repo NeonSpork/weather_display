@@ -95,7 +95,7 @@ def parseXmlAndDrawToMask():
     # The following changes the root if the country is not Norway
     # Since less detailed information is published, changing
     # country results in an IndexError.
-    if root[0][2] == "Norway":
+    if root[0][2].text == "Norway":
         secondRoot = 1
     else:
         secondRoot = 0
