@@ -61,22 +61,23 @@ def updateXmlUrl():
     the frame since the information won't be refreshed unless
     the url is updated.
     """
-    attempts = 1
+    # attempts = 1
     urlReady = False
     while not urlReady:
         try:
             xmlUrl = urllib2.urlopen(
-                'https://www.yr.no/place/USA/New_York/New_York/forecast.xml')
+                'https://www.yr.no/place/Norway/Rogaland/Sandnes/Skeiane/forecast.xml')
             # Exchange the link above with your location.
             print('XML successfully opened.')
             urlReady = True
+            attempts = 1
         except:
-            if attempts <= 10:
-                print('Error opening url, retrying in 15 seconds.'
-                      ' (Attempt {} of 10)'.format(attempts))
+            if attempts <= 100:
+                print('Error opening url, retrying in 10 seconds.'
+                      ' (Attempt {} of 100)'.format(attempts))
                 attempts += 1
-                time.sleep(15)
-            elif attempts > 10:
+                time.sleep(10)
+            elif attempts > 100:
                 raise RuntimeError('Please check your internet connection '
                                    'and restart the program.')
     global xmlString
@@ -95,11 +96,11 @@ def parseXmlAndDrawToMask():
     # The following changes the root if the country is not Norway
     # Since less detailed information is published, changing
     # country results in an IndexError.
-    if root[0][2] == "Norway":
+    if root[0][2].text == "Norway":
         secondRoot = 1
     else:
         secondRoot = 0
-    location = root[0][0]
+    location = root[0][0].text
 
     # Temperature related variables:
     # Five total periods: current temperature, and the four next
@@ -166,10 +167,10 @@ def parseXmlAndDrawToMask():
         draw.text((98, 5), '{}'.format(negativeCurrentTemp),
                   font=bigfont, fill=0)
         draw.text((98, 75), 'BELOW ZERO', font=teenyfont, fill=0)
-    draw.text((75, 0), '{}'.format(location), font=tinyfont, fill=0)
+    draw.text((100, 0), '{}'.format(location), font=tinyfont, fill=0)
 
-    mask.paste(refreshIcon, (75, 142))
-    draw.text((90, 145), '{}'.format(lastUpdated),
+    mask.paste(refreshIcon, (82, 144))
+    draw.text((95, 143), '{}'.format(lastUpdated),
               font=teenytinyfont, fill=0)
     wrappedStatus = textwrap.fill(currentStatus, 16)
     draw.text((5, 100), '{}'.format(wrappedStatus), font=normalfont, fill=0)
