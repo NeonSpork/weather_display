@@ -14,9 +14,9 @@ import logging
 import os
 import textwrap
 import epd2in7
-import Image
-import ImageFont
-import ImageDraw
+from PIL import Image
+from PIL import ImageFont
+from PIL import ImageDraw
 import urllib2
 import xml.etree.ElementTree as ET
 
