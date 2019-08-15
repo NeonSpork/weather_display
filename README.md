@@ -87,8 +87,9 @@ $ sudo crontab -e
 ```
 Add the following line, replacing YOUR_FOLDER with whatever directory you placed the weather_display folder in:
 ```
-@reboot sh /home/pi/YOUR_FOLDER/weather_display/launcher.sh >/home/pi/YOUR_FOLDER/weather_display/logs/cronlog 2>&1
+@reboot sleep 60 && sh /home/pi/YOUR_FOLDER/weather_display/launcher.sh >/home/pi/YOUR_FOLDER/weather_display/logs/cronlog 2>&1
 ```
+(the 1 minute sleep is to give the pi time to wake up, otherwise I've found the script fails to launch!)
 Then hit Ctrl+X to save, Y to confirm and Enter to exit.
 The launcher shell will navigate to the correct folder and run the python script. If for whatever reason it doesn't work, the errors will be logged in a text file in /weather_display/logs.
 
