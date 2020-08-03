@@ -18,7 +18,7 @@ from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
 import urllib2
-import xml.etree.ElementTree as ET
+import json
 
 
 """Need to initialize the display so the
@@ -52,104 +52,89 @@ medfont = ImageFont.truetype(
 bigfont = ImageFont.truetype(
     '/usr/share/fonts/truetype/freefont/FreeArial.ttf', 70)
 
+data = 0
+mask = 0
 
-def updateXmlUrl():
-    """Opens the .xml file from www.yr.no
+urlLegend = urllib2.urlopen('https://api.met.no/weatherapi/weathericon/2.0/legends')
+legendUrl = urlLegend.read()
+legend = json.loads(legendUrl)
 
-    Opens url and handles the processing of the .xml file
-    with ElementTree. Should be called every time you update
+def updateWeatherUrl():
+    """Opens the json file from www.yr.no
+
+    Opens url and handles the processing of the json.
+    Should be called every time you update
     the frame since the information won't be refreshed unless
     the url is updated.
     """
     # attempts = 1
     urlReady = False
     while not urlReady:
-        try:
-            xmlUrl = urllib2.urlopen(
-                'https://www.yr.no/place/USA/New_York/New_York/forecast.xml')
-            # Exchange the link above with your location.
-            print('XML successfully opened.')
+        url = urllib2.urlopen(
+            'https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=58.8474&lon=5.7166')
+        # Exchange the link above with your location.
+        if(url.getcode() == 200):
             urlReady = True
             attempts = 1
-        except:
+            dataUrl = url.read()
+            data = json.loads(dataUrl)
+            print('{} Weather data URL successfully opened.'
+                  .format(data['properties']['meta']['updated_at']))
+        else:
+            print('Error retrieving data', url.getcode())
+            attempts += 1
             if attempts <= 100:
-                print('Error opening url, retrying in 10 seconds.'
+                print('Retrying in 10 seconds.'
                       ' (Attempt {} of 100)'.format(attempts))
-                attempts += 1
                 time.sleep(10)
             elif attempts > 100:
                 raise RuntimeError('Please check your internet connection '
                                    'and restart the program.')
-    global xmlString
-    xmlString = xmlUrl.read()
 
 
-def parseXmlAndDrawToMask():
-    """Parses xml file into strings.
+def parseJsonAndDrawToMask():
+    """Parses json into strings.
 
-    Handles the expansion of the xml root into their respective variables.
+    Handles the expansion of the json into their respective variables.
     Also handles the opening of image files and draws everything to the
     mask that will be drawn on the E-ink screen.
     """
-    root = ET.fromstring(xmlString)
+    lastUpdated = time.strftime('%d.%m.%y %H:%M')
+    stats = data['properties']['timeseries']
 
-    # The following changes the root if the country is not Norway
-    # Since less detailed information is published, changing
-    # country results in an IndexError.
-    if root[0][2].text == "Norway":
-        secondRoot = 1
-    else:
-        secondRoot = 0
-    location = root[0][0].text
 
     # Temperature related variables:
     # Five total periods: current temperature, and the four next
     # 6 hour periods. (FirstPeriod, SecondPeriod, etc)
-    lastUpdated = time.strftime('%a %d.%m %H:%M')
-    currentTemperature = root[5][secondRoot][0][4].attrib['value']
-    timeFirstPeriodStart = root[5][secondRoot][1].attrib['from'][11:13]
-    timeFirstPeriodEnd = root[5][secondRoot][1].attrib['to'][11:13]
-    tempFirstPeriod = root[5][secondRoot][1][4].attrib['value']
-    iconFirstPeriod = root[5][secondRoot][1][0].attrib['var']
-    timeSecondPeriodStart = root[5][secondRoot][2].attrib['from'][11:13]
-    timeSecondPeriodEnd = root[5][secondRoot][2].attrib['to'][11:13]
-    tempSecondPeriod = root[5][secondRoot][2][4].attrib['value']
-    iconSecondPeriod = root[5][secondRoot][2][0].attrib['var']
-    timeThirdPeriodStart = root[5][secondRoot][3].attrib['from'][11:13]
-    timeThirdPeriodEnd = root[5][secondRoot][3].attrib['to'][11:13]
-    tempThirdPeriod = root[5][secondRoot][3][4].attrib['value']
-    iconThirdPeriod = root[5][secondRoot][3][0].attrib['var']
-    timeFourthPeriodStart = root[5][secondRoot][4].attrib['from'][11:13]
-    timeFourthPeriodEnd = root[5][secondRoot][4].attrib['to'][11:13]
-    tempFourthPeriod = root[5][secondRoot][4][4].attrib['value']
-    iconFourthPeriod = root[5][secondRoot][4][0].attrib['var']
+    currentTemperature = stats[0]['data']['instant']['details']['air_temperature']
+
+    next6hTemp = stats[0]['data']['next_6_hours']['details']['air_temperature_max']
+    icon6h = stats[0]['data']['next_6_hours']['summary']['symbol_code']
+    next12hTemp = stats[0]['data']['next_12_hours']['details']['air_temperature_max']
+    icon12h = stats[0]['data']['next_12_hours']['summary']['symbol_code']
 
     # Weather conditions and various icons
-    currentIcon = root[5][secondRoot][0][0].attrib['var']
-    unconvertedIcon = Image.open('yr_icons/{}.png'.format(currentIcon))
+    currentIcon = stats[0]['data']['next_1_hours']['summary']['symbol_code']
+    currentStatus = legend[currentIcon]['desc_en']
+    rainChancePercent = stats[0]['data']['next_1_hours']['summary']['symbol_code']
+
+    conditionIcon = Image.open('yr_icons/{}.png'.format(currentIcon))
     refreshIcon = Image.open('yr_icons/refresh.png')
-    conditionIcon = unconvertedIcon.convert('L')
-    currentStatus = root[5][secondRoot][0][0].attrib['name']
-    fullSunriseTimeStamp = root[4].attrib['rise']
-    fullSunsetTimeStamp = root[4].attrib['set']
-    sunriseTime = fullSunriseTimeStamp[11:16]
-    sunsetTime = fullSunsetTimeStamp[11:16]
-    sunupIcon = Image.open('yr_icons/sunup.png')
-    sundownIcon = Image.open('yr_icons/sundown.png')
     windIcon = Image.open('yr_icons/windicon.png')
-    icon1 = Image.open('yr_icons/{}.png'.format(iconFirstPeriod))
-    icon2 = Image.open('yr_icons/{}.png'.format(iconSecondPeriod))
-    icon3 = Image.open('yr_icons/{}.png'.format(iconThirdPeriod))
-    icon4 = Image.open('yr_icons/{}.png'.format(iconFourthPeriod))
+    rainLine = Image.open('yr_icons/rainline.png')
+    rainChance = Image.open('yr_icons/rainChance.png')
+    twelveHrain = Image.open('yr_icons/twelveHrain.png')
+    next6hIcon = Image.open('yr_icons/{}.png'.format(icon6h))
+    sixhours = Image.open('yr_icons/sixhours.png')
+    next12hIcon = Image.open('yr_icons/{}.png'.format(icon12h))
+    twelvehours = Image.open('yr_icons/twelvehours.png')
 
     # Wind information
-    windSpeed = root[5][secondRoot][0][3].attrib['mps']
-    windBeaufort = root[5][secondRoot][0][3].attrib['name']
-    windDirection = root[5][secondRoot][0][2].attrib['name']
+    windSpeed = stats[0]['data']['instant']['details']['wind_speed']
+    windMaxGust = stats[0]['data']['instant']['details']['wind_speed_of_gust']
 
     # Coordinates are X, Y:
     # 0, 0 is top left of screen 176, 264 is bottom right
-    global mask
     mask = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 255)
     # 255: clear the image with white
     draw = ImageDraw.Draw(mask)
@@ -158,56 +143,154 @@ def parseXmlAndDrawToMask():
     currentTemp = int(currentTemperature)
     if (currentTemp <= 9) and (currentTemp >= -9):
         # Centers the temperature when it is single digits
-        draw.text((120, 5), '{}'.format(currentTemp), font=bigfont, fill=0)
+        draw.text((120, 22), '{}'.format(currentTemp), font=bigfont, fill=0)
     elif (currentTemp >= 10):
-        draw.text((98, 5), '{}'.format(currentTemp), font=bigfont, fill=0)
+        draw.text((98, 22), '{}'.format(currentTemp), font=bigfont, fill=0)
     elif (currentTemp <= -10):
         # Adds text "BELOW ZERO" underneath, no space for a minus sign
         negativeCurrentTemp = (currentTemp * -1)
-        draw.text((98, 5), '{}'.format(negativeCurrentTemp),
+        draw.text((98, 22), '{}'.format(negativeCurrentTemp),
                   font=bigfont, fill=0)
-        draw.text((98, 75), 'BELOW ZERO', font=teenyfont, fill=0)
-    draw.text((100, 0), '{}'.format(location), font=tinyfont, fill=0)
+        draw.text((105, 76), 'BELOW ZERO', font=teenyfont, fill=0)
 
-    mask.paste(refreshIcon, (82, 144))
-    draw.text((95, 143), '{}'.format(lastUpdated),
+
+    mask.paste(rainChance, (112, 93))
+    draw.text((133, 92), '{}%'.format(int(rainChancePercent)), font=teenyfont, fill=0)
+
+
+    mask.paste(refreshIcon, (93, 85))
+    draw.text((106, 84), '{}'.format(lastUpdated),
               font=teenytinyfont, fill=0)
-    wrappedStatus = textwrap.fill(currentStatus, 16)
-    draw.text((5, 100), '{}'.format(wrappedStatus), font=normalfont, fill=0)
-    draw.line((0, 155, 176, 155), fill=0, width=2)
+    wrappedStatus = textwrap.fill(currentStatus, 19)
+    draw.text((5, 104), '{}'.format(wrappedStatus), font=smallfont, fill=0)
 
-    draw.text((2, 158), '{}-{}'.format(timeFirstPeriodStart,
-              timeFirstPeriodEnd), font=tinyfont, fill=0)
-    draw.text((46, 158), '{}-{}'.format(timeSecondPeriodStart,
-              timeSecondPeriodEnd), font=tinyfont, fill=0)
-    draw.text((90, 158), '{}-{}'.format(timeThirdPeriodStart,
-              timeThirdPeriodEnd), font=tinyfont, fill=0)
-    draw.text((134, 158), '{}-{}'.format(timeFourthPeriodStart,
-              timeFourthPeriodEnd), font=tinyfont, fill=0)
-    draw.text((0, 180), '{}'.format(tempFirstPeriod), font=tinyfont, fill=0)
-    draw.text((44, 180), '{}'.format(tempSecondPeriod), font=tinyfont, fill=0)
-    draw.text((88, 180), '{}'.format(tempThirdPeriod), font=tinyfont, fill=0)
-    draw.text((132, 180), '{}'.format(tempFourthPeriod), font=tinyfont, fill=0)
-    mask.paste(icon1.resize((25, 25)), (16, 175))
-    mask.paste(icon2.resize((25, 25)), (60, 175))
-    mask.paste(icon3.resize((25, 25)), (104, 175))
-    mask.paste(icon4.resize((25, 25)), (148, 175))
-    draw.line((42, 155, 42, 204), fill=0, width=1)
-    draw.line((86, 155, 86, 204), fill=0, width=1)
-    draw.line((130, 155, 130, 204), fill=0, width=1)
-    draw.line((0, 173, 176, 173), fill=0, width=1)
 
-    draw.line((0, 204, 176, 204), fill=0, width=2)
-    mask.paste(windIcon, (0, 208))
-    draw.text((41, 206), '{}'.format(windDirection), font=tinyfont, fill=0)
-    draw.text((0, 220), '{} {}'.format(windSpeed, windBeaufort),
+
+    mask.paste(sixhours, (2, 153))
+    draw.text((22, 162), '{}'.format(next6hTemp), font=smallfont, fill=0)
+    mask.paste(next6hIcon.resize((48, 48)), (22, 144))
+    mask.paste(twelvehours, (90, 153))
+    draw.text((110, 162), '{}'.format(next12hTemp), font=smallfont, fill=0)
+    mask.paste(next12hIcon.resize((48, 48)), (110, 144))
+
+    # Precipitation lines
+    # Black fill line for actual rain
+    rain1h = 249 - int(float(rainAmount1)*12)
+    rain2h = 249 - int(float(rainAmount2)*12)
+    rain3h = 249 - int(float(rainAmount3)*12)
+    rain4h = 249 - int(float(rainAmount4)*12)
+    rain5h = 249 - int(float(rainAmount5)*12)
+    rain6h = 249 - int(float(rainAmount6)*12)
+    rain7h = 249 - int(float(rainAmount7)*12)
+    rain8h = 249 - int(float(rainAmount8)*12)
+    rain9h = 249 - int(float(rainAmount9)*12)
+    rain10h = 249 - int(float(rainAmount10)*12)
+    rain11h = 249 - int(float(rainAmount11)*12)
+    rain12h = 249 - int(float(rainAmount12)*12)
+    if(rain1h > 0):
+        draw.line((10, 249, 10, rain1h), fill=0, width=10)
+    if(rain2h > 0):
+        draw.line((24, 249, 24, rain2h), fill=0, width=10)
+    if(rain3h > 0):
+        draw.line((38, 249, 38, rain3h), fill=0, width=10)
+    if(rain4h > 0):
+        draw.line((52, 249, 52, rain4h), fill=0, width=10)
+    if(rain5h > 0):
+        draw.line((66, 249, 66, rain5h), fill=0, width=10)
+    if(rain6h > 0):
+        draw.line((80, 249, 80, rain6h), fill=0, width=10)
+    if(rain7h > 0):
+        draw.line((94, 249, 94, rain7h), fill=0, width=10)
+    if(rain8h > 0):
+        draw.line((108, 249, 108, rain8h), fill=0, width=10)
+    if(rain9h > 0):
+        draw.line((122, 249, 122, rain9h), fill=0, width=10)
+    if(rain10h > 0):
+        draw.line((136, 249, 136, rain10h), fill=0, width=10)
+    if(rain11h > 0):
+        draw.line((150, 249, 150, rain11h), fill=0, width=10)
+    if(rain12h > 0):
+        draw.line((164, 249, 164, rain12h), fill=0, width=10)
+    # Only outline for maximum possible rain
+    rainMax1h = 249 - int(float(rainMaxAmount1)*12)
+    rainMax2h = 249 - int(float(rainMaxAmount2)*12)
+    rainMax3h = 249 - int(float(rainMaxAmount3)*12)
+    rainMax4h = 249 - int(float(rainMaxAmount4)*12)
+    rainMax5h = 249 - int(float(rainMaxAmount5)*12)
+    rainMax6h = 249 - int(float(rainMaxAmount6)*12)
+    rainMax7h = 249 - int(float(rainMaxAmount7)*12)
+    rainMax8h = 249 - int(float(rainMaxAmount8)*12)
+    rainMax9h = 249 - int(float(rainMaxAmount9)*12)
+    rainMax10h = 249 - int(float(rainMaxAmount10)*12)
+    rainMax11h = 249 - int(float(rainMaxAmount11)*12)
+    rainMax12h = 249 - int(float(rainMaxAmount12)*12)
+    if(rainMax1h > 0):
+        draw.line((10, 249, 10, rainMax1h), fill=0, width=1)
+        draw.line((10, 249, 19, 249), fill=0, width=1)
+        draw.line((19, 249, 19, rainMax1h), fill=0, width=1)
+        draw.line((10, rainMax1h, 19, rainMax1h), fill=0, width=1)
+    if(rainMax2h > 0):
+        draw.line((24, 249, 24, rainMax2h), fill=0, width=1)
+        draw.line((24, 249, 33, 249), fill=0, width=1)
+        draw.line((33, 249, 33, rainMax2h), fill=0, width=1)
+        draw.line((24, rainMax2h, 33, rainMax2h), fill=0, width=1)
+    if(rainMax3h > 0):
+        draw.line((38, 249, 38, rainMax3h), fill=0, width=1)
+        draw.line((38, 249, 47, 249), fill=0, width=1)
+        draw.line((47, 249, 47, rainMax3h), fill=0, width=1)
+        draw.line((38, rainMax3h, 47, rainMax3h), fill=0, width=1)
+    if(rainMax4h > 0):
+        draw.line((52, 249, 52, rainMax4h), fill=0, width=1)
+        draw.line((52, 249, 61, 249), fill=0, width=1)
+        draw.line((61, 249, 61, rainMax4h), fill=0, width=1)
+        draw.line((52, rainMax4h, 61, rainMax4h), fill=0, width=1)
+    if(rainMax5h > 0):
+        draw.line((66, 249, 66, rainMax5h), fill=0, width=1)
+        draw.line((66, 249, 75, 249), fill=0, width=1)
+        draw.line((75, 249, 75, rainMax5h), fill=0, width=1)
+        draw.line((66, rainMax5h, 75, rainMax5h), fill=0, width=1)
+    if(rainMax6h > 0):
+        draw.line((80, 249, 80, rainMax6h), fill=0, width=1)
+        draw.line((80, 249, 89, 249), fill=0, width=1)
+        draw.line((89, 249, 89, rainMax6h), fill=0, width=1)
+        draw.line((80, rainMax6h, 89, rainMax6h), fill=0, width=1)
+    if(rainMax7h > 0):
+        draw.line((94, 249, 94, rainMax7h), fill=0, width=1)
+        draw.line((94, 249, 103, 249), fill=0, width=1)
+        draw.line((103, 249, 103, rainMax7h), fill=0, width=1)
+        draw.line((94, 249, 103, rainMax7h), fill=0, width=1)
+    if(rainMax8h > 0):
+        draw.line((108, 249, 108, rainMax8h), fill=0, width=1)
+        draw.line((108, 249, 117, 249), fill=0, width=1)
+        draw.line((117, 249, 117, rainMax8h), fill=0, width=1)
+        draw.line((108, rainMax8h, 117, rainMax8h), fill=0, width=1)
+    if(rainMax9h > 0):
+        draw.line((122, 249, 122, rainMax9h), fill=0, width=1)
+        draw.line((122, 249, 131, 249), fill=0, width=1)
+        draw.line((131, 249, 131, rainMax9h), fill=0, width=1)
+        draw.line((122, rainMax9h, 131, rainMax9h), fill=0, width=1)
+    if(rainMax10h > 0):
+        draw.line((136, 249, 136, rainMax10h), fill=0, width=1)
+        draw.line((136, 249, 145, 249), fill=0, width=1)
+        draw.line((145, 249, 145, rainMax10h), fill=0, width=1)
+        draw.line((136, rainMax10h, 145, rainMax10h), fill=0, width=1)
+    if(rainMax11h > 0):
+        draw.line((150, 249, 150, rainMax11h), fill=0, width=1)
+        draw.line((150, 249, 159, 249), fill=0, width=1)
+        draw.line((159, 249, 159, rainMax11h), fill=0, width=1)
+        draw.line((150, rainMax11h, 159, rainMax11h), fill=0, width=1)
+    if(rainMax12h > 0):
+        draw.line((164, 249, 164, rainMax12h), fill=0, width=1)
+        draw.line((164, 249, 173, 249), fill=0, width=1)
+        draw.line((173, 249, 173, rainMax12h), fill=0, width=1)
+        draw.line((164, rainMax12h, 173, rainMax12h), fill=0, width=1)
+
+    mask.paste(windIcon, (0, 258))
+    mask.paste(rainLine, (8, 250))
+    mask.paste(twelveHrain, (1, 224))
+    draw.text((43, 256), '{}-{} m/s'.format(windSpeed, windMaxGust),
               font=smallfont, fill=0)
 
-    mask.paste(sunupIcon, (0, 244))
-    mask.paste(sundownIcon, (88, 244))
-    draw.line((0, 242, 176, 242), fill=0, width=2)
-    draw.text((40, 244), '{}'.format(sunriseTime), font=smallfont, fill=0)
-    draw.text((128, 244), '{}'.format(sunsetTime), font=smallfont, fill=0)
 
     print('Successfully parsed XML file and created mask. {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
 
@@ -236,12 +319,12 @@ if __name__ == '__main__':
     running = True
     while running:
         try:
-            updateXmlUrl()
+            updateWeatherUrl()
         except Exception as e:
             logError(e)
             print(e)
         try:
-            parseXmlAndDrawToMask()
+            parseJsonAndDrawToMask()
         except Exception as e:
             logError(e)
             print(e)
