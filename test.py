@@ -8,9 +8,10 @@ from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
 
-
+import epd2in7
 epd = epd2in7.EPD()
 epd.init()
+
 EPD_WIDTH = 176  # 176 pixels
 EPD_HEIGHT = 264  # 264 pixels
 # Fonts
