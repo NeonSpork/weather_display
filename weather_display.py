@@ -111,13 +111,13 @@ def parseJsonAndDrawToMask():
 
     next6hTemp = stats[0]['data']['next_6_hours']['details']['air_temperature_max']
     icon6h = stats[0]['data']['next_6_hours']['summary']['symbol_code']
-    next12hTemp = stats[0]['data']['next_12_hours']['details']['air_temperature_max']
+    next12hTemp = stats[11]['data']['instant']['details']['air_temperature']
     icon12h = stats[0]['data']['next_12_hours']['summary']['symbol_code']
 
     # Weather conditions and various icons
     currentIcon = stats[0]['data']['next_1_hours']['summary']['symbol_code']
     currentStatus = legend[currentIcon]['desc_en']
-    rainChancePercent = stats[0]['data']['next_1_hours']['summary']['symbol_code']
+    rainChancePercent = stats[0]['data']['next_1_hours']['details']['probability_of_precipitation']
 
     conditionIcon = Image.open('yr_icons/{}.png'.format(currentIcon))
     refreshIcon = Image.open('yr_icons/refresh.png')
@@ -134,6 +134,31 @@ def parseJsonAndDrawToMask():
     windSpeed = stats[0]['data']['instant']['details']['wind_speed']
     windMaxGust = stats[0]['data']['instant']['details']['wind_speed_of_gust']
 
+    # Precipitation info
+    rainAmount1 = stats[0]['data']['next_1_hours']['details']['precipitation_amount']
+    rainAmount2 = stats[1]['data']['next_1_hours']['details']['precipitation_amount']
+    rainAmount3 = stats[2]['data']['next_1_hours']['details']['precipitation_amount']
+    rainAmount4 = stats[3]['data']['next_1_hours']['details']['precipitation_amount']
+    rainAmount5 = stats[4]['data']['next_1_hours']['details']['precipitation_amount']
+    rainAmount6 = stats[5]['data']['next_1_hours']['details']['precipitation_amount']
+    rainAmount7 = stats[6]['data']['next_1_hours']['details']['precipitation_amount']
+    rainAmount8 = stats[7]['data']['next_1_hours']['details']['precipitation_amount']
+    rainAmount9 = stats[8]['data']['next_1_hours']['details']['precipitation_amount']
+    rainAmount10 = stats[9]['data']['next_1_hours']['details']['precipitation_amount']
+    rainAmount11 = stats[10]['data']['next_1_hours']['details']['precipitation_amount']
+    rainAmount12 = stats[11]['data']['next_1_hours']['details']['precipitation_amount']
+    rainMaxAmount1 = stats[0]['data']['next_1_hours']['details']['precipitation_amount_max']
+    rainMaxAmount2 = stats[1]['data']['next_1_hours']['details']['precipitation_amount_max']
+    rainMaxAmount3 = stats[2]['data']['next_1_hours']['details']['precipitation_amount_max']
+    rainMaxAmount4 = stats[3]['data']['next_1_hours']['details']['precipitation_amount_max']
+    rainMaxAmount5 = stats[4]['data']['next_1_hours']['details']['precipitation_amount_max']
+    rainMaxAmount6 = stats[5]['data']['next_1_hours']['details']['precipitation_amount_max']
+    rainMaxAmount7 = stats[6]['data']['next_1_hours']['details']['precipitation_amount_max']
+    rainMaxAmount8 = stats[7]['data']['next_1_hours']['details']['precipitation_amount_max']
+    rainMaxAmount9 = stats[8]['data']['next_1_hours']['details']['precipitation_amount_max']
+    rainMaxAmount10 = stats[9]['data']['next_1_hours']['details']['precipitation_amount_max']
+    rainMaxAmount11 = stats[10]['data']['next_1_hours']['details']['precipitation_amount_max']
+    rainMaxAmount12 = stats[11]['data']['next_1_hours']['details']['precipitation_amount_max']
     # Coordinates are X, Y:
     # 0, 0 is top left of screen 176, 264 is bottom right
     # global mask
@@ -151,13 +176,13 @@ def parseJsonAndDrawToMask():
     elif (currentTemp <= -10):
         # Adds text "BELOW ZERO" underneath, no space for a minus sign
         negativeCurrentTemp = (currentTemp * -1)
-        draw.text((98, 22), '{}'.format(negativeCurrentTemp),
+        draw.text((98, 13), '{}'.format(negativeCurrentTemp),
                   font=bigfont, fill=0)
-        draw.text((105, 76), 'BELOW ZERO', font=teenyfont, fill=0)
+        draw.text((105, 67), 'BELOW ZERO', font=teenyfont, fill=0)
 
 
-    mask.paste(rainChance, (112, 93))
-    draw.text((133, 92), '{}%'.format(int(rainChancePercent)), font=teenyfont, fill=0)
+    mask.paste(rainChance, (110, 78))
+    draw.text((127, 81), '{}%'.format(int(rainChancePercent)), font=smallfont, fill=0)
 
 
     mask.paste(refreshIcon, (93, 85))
@@ -294,7 +319,7 @@ def parseJsonAndDrawToMask():
               font=smallfont, fill=0)
 
 
-    print('Successfully parsed XML file and created mask. {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
+    print('Successfully parsed json file and created mask. {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
     # epd.display_frame(epd.get_frame_buffer(mask))
 
     # Turns mask upside down, this just happened to work best for my frame
