@@ -136,7 +136,7 @@ def parseJsonAndDrawToMask():
 
     # Coordinates are X, Y:
     # 0, 0 is top left of screen 176, 264 is bottom right
-    global mask
+    # global mask
     mask = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 255)
     # 255: clear the image with white
     draw = ImageDraw.Draw(mask)
@@ -297,12 +297,12 @@ def parseJsonAndDrawToMask():
     print('Successfully parsed XML file and created mask. {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
 
 
-def printMaskToEinkScreen():
-    rotatedMask = mask.rotate(180)
-    # Turns mask upside down, this just happened to work best for my frame
-    # with regards to which side the cable came out.
-    epd.display_frame(epd.get_frame_buffer(rotatedMask))
-    print('Weather display successfully refreshed at {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
+# def printMaskToEinkScreen():
+#     rotatedMask = mask.rotate(180)
+#     # Turns mask upside down, this just happened to work best for my frame
+#     # with regards to which side the cable came out.
+#     epd.display_frame(epd.get_frame_buffer(rotatedMask))
+#     print('Weather display successfully refreshed at {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
 
 
 def setUpErrorLogging():
