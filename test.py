@@ -8,9 +8,9 @@ from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
 
-import epd2in7
-epd = epd2in7.EPD()
-epd.init()
+# import epd2in7
+# epd = epd2in7.EPD()
+# epd.init()
 
 EPD_WIDTH = 176  # 176 pixels
 EPD_HEIGHT = 264  # 264 pixels
@@ -205,28 +205,37 @@ def parseJsonAndDrawToMask():
             draw.line((i, 239, i, rain1h), fill=0, width=1)
     if(rain2h > 0):
         for i in range(24, 33):
-            draw.line((i, 239, i, rain1h), fill=0, width=1)
+            draw.line((i, 239, i, rain2h), fill=0, width=1)
     if(rain3h > 0):
         for i in range(38, 47):
-            draw.line((i, 239, i, rain1h), fill=0, width=1)
+            draw.line((i, 239, i, rain3h), fill=0, width=1)
     if(rain4h > 0):
-        draw.line((52, 239, 52, rain4h), fill=0, width=10)
+        for i in range(52, 61):
+            draw.line((i, 239, i, rain4h), fill=0, width=1)
     if(rain5h > 0):
-        draw.line((66, 239, 66, rain5h), fill=0, width=10)
+        for i in range(66, 75):
+            draw.line((i, 239, i, rain5h), fill=0, width=1)
     if(rain6h > 0):
-        draw.line((80, 239, 80, rain6h), fill=0, width=10)
+        for i in range(80, 89):
+            draw.line((i, 239, i, rain6h), fill=0, width=1)
     if(rain7h > 0):
-        draw.line((94, 239, 94, rain7h), fill=0, width=10)
+        for i in range(94, 103):
+            draw.line((i, 239, i, rain7h), fill=0, width=1)
     if(rain8h > 0):
-        draw.line((108, 239, 108, rain8h), fill=0, width=10)
+        for i in range(108, 117):
+            draw.line((i, 239, i, rain8h), fill=0, width=1)
     if(rain9h > 0):
-        draw.line((122, 239, 122, rain9h), fill=0, width=10)
+        for i in range(122, 131):
+            draw.line((i, 239, i, rain9h), fill=0, width=1)
     if(rain10h > 0):
-        draw.line((136, 239, 136, rain10h), fill=0, width=10)
+        for i in range(136, 145):
+            draw.line((i, 239, i, rain10h), fill=0, width=1)
     if(rain11h > 0):
-        draw.line((150, 239, 150, rain11h), fill=0, width=10)
+        for i in range(150, 159):
+            draw.line((i, 239, i, rain11h), fill=0, width=1)
     if(rain12h > 0):
-        draw.line((164, 239, 164, rain12h), fill=0, width=10)
+        for i in range(164, 173):
+            draw.line((i, 239, i, rain12h), fill=0, width=1)
     # Only outline for maximum possible rain
     rainMax1h = 239 - (2.5*12)
     rainMax2h = 239 - (2.5*12)
@@ -313,8 +322,9 @@ def parseJsonAndDrawToMask():
 
     # Turns mask upside down, this just happened to work best for my frame
     # with regards to which side the cable came out.
-    rotatedMask = mask.rotate(180)
-    epd.display_frame(epd.get_frame_buffer(rotatedMask))
+    # rotatedMask = mask.rotate(180)
+    # epd.display_frame(epd.get_frame_buffer(rotatedMask))
+    mask.save('test.png')
     print('Weather display successfully refreshed at {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
 
 if __name__ == '__main__':
