@@ -201,7 +201,8 @@ def parseJsonAndDrawToMask():
     rain11h = 239 - (1.7*12)
     rain12h = 239 - (2.8*12)
     if(rain1h > 0):
-        draw.line((10, 239, 10, rain1h), fill=0, width=10)
+        for i in range(10, 19):
+            draw.line((i, 239, i, rain1h), fill=0, width=1)
     if(rain2h > 0):
         draw.line((24, 239, 24, rain2h), fill=0, width=10)
     if(rain3h > 0):
@@ -271,7 +272,7 @@ def parseJsonAndDrawToMask():
         draw.line((94, 239, 94, rainMax7h), fill=0, width=1)
         draw.line((94, 239, 103, 239), fill=0, width=1)
         draw.line((103, 239, 103, rainMax7h), fill=0, width=1)
-        draw.line((94, 239, 103, rainMax7h), fill=0, width=1)
+        draw.line((94, rainMax7h, 103, rainMax7h), fill=0, width=1)
     if(rainMax8h > 0):
         draw.line((108, 239, 108, rainMax8h), fill=0, width=1)
         draw.line((108, 239, 117, 239), fill=0, width=1)
