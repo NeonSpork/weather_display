@@ -295,14 +295,16 @@ def parseJsonAndDrawToMask():
 
 
     print('Successfully parsed XML file and created mask. {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
+    # epd.display_frame(epd.get_frame_buffer(mask))
+
+    # Turns mask upside down, this just happened to work best for my frame
+    # with regards to which side the cable came out.
+    rotatedMask = mask.rotate(180)
+    epd.display_frame(epd.get_frame_buffer(rotatedMask))
+    print('Weather display successfully refreshed at {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
 
 
 # def printMaskToEinkScreen():
-#     rotatedMask = mask.rotate(180)
-#     # Turns mask upside down, this just happened to work best for my frame
-#     # with regards to which side the cable came out.
-#     epd.display_frame(epd.get_frame_buffer(rotatedMask))
-#     print('Weather display successfully refreshed at {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
 
 
 def setUpErrorLogging():
@@ -330,10 +332,10 @@ if __name__ == '__main__':
         except Exception as e:
             logError(e)
             print(e)
-        try:
-            printMaskToEinkScreen()
-        except Exception as e:
-            logError (e)
-            print(e)
+        # try:
+        #     printMaskToEinkScreen()
+        # except Exception as e:
+        #     logError (e)
+        #     print(e)
         time.sleep(600)
         # Refreshes every 10 minutes
