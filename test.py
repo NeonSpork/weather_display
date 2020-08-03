@@ -204,9 +204,11 @@ def parseJsonAndDrawToMask():
         for i in range(10, 19):
             draw.line((i, 239, i, rain1h), fill=0, width=1)
     if(rain2h > 0):
-        draw.line((24, 239, 24, rain2h), fill=0, width=10)
+        for i in range(24, 33):
+            draw.line((i, 239, i, rain1h), fill=0, width=1)
     if(rain3h > 0):
-        draw.line((38, 239, 38, rain3h), fill=0, width=10)
+        for i in range(38, 47):
+            draw.line((i, 239, i, rain1h), fill=0, width=1)
     if(rain4h > 0):
         draw.line((52, 239, 52, rain4h), fill=0, width=10)
     if(rain5h > 0):
