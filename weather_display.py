@@ -52,8 +52,8 @@ medfont = ImageFont.truetype(
 bigfont = ImageFont.truetype(
     '/usr/share/fonts/truetype/freefont/FreeArial.ttf', 70)
 
-data = 0
-mask = 0
+# data = 0
+# mask = 0
 
 urlLegend = urllib2.urlopen('https://api.met.no/weatherapi/weathericon/2.0/legends')
 legendUrl = urlLegend.read()
@@ -77,6 +77,7 @@ def updateWeatherUrl():
             urlReady = True
             attempts = 1
             dataUrl = url.read()
+            global data
             data = json.loads(dataUrl)
             print('{} Weather data URL successfully opened.'
                   .format(data['properties']['meta']['updated_at']))
@@ -135,6 +136,7 @@ def parseJsonAndDrawToMask():
 
     # Coordinates are X, Y:
     # 0, 0 is top left of screen 176, 264 is bottom right
+    global mask
     mask = Image.new('1', (EPD_WIDTH, EPD_HEIGHT), 255)
     # 255: clear the image with white
     draw = ImageDraw.Draw(mask)
