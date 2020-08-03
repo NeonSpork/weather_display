@@ -8,9 +8,9 @@ from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
 
-import epd2in7
-epd = epd2in7.EPD()
-epd.init()
+# import epd2in7
+# epd = epd2in7.EPD()
+# epd.init()
 
 EPD_WIDTH = 176  # 176 pixels
 EPD_HEIGHT = 264  # 264 pixels
@@ -167,8 +167,8 @@ def parseJsonAndDrawToMask():
                   font=bigfont, fill=0)
 
 
-    mask.paste(rainChance, (112, 93))
-    draw.text((133, 92), '{}%'.format(int(rainChancePercent)), font=teenyfont, fill=0)
+    mask.paste(rainChance, (110, 83))
+    draw.text((127, 83), '{}%'.format(int(rainChancePercent)), font=smallfont, fill=0)
 
 
     mask.paste(refreshIcon, (91, 1))
@@ -216,7 +216,7 @@ def parseJsonAndDrawToMask():
         for i in range(66, 75):
             draw.line((i, 239, i, rain5h), fill=0, width=1)
     if(rain6h > 0):
-        for i in range(80, 89):
+        for i in range(80, 90):
             draw.line((i, 239, i, rain6h), fill=0, width=1)
     if(rain7h > 0):
         for i in range(94, 103):
@@ -322,9 +322,9 @@ def parseJsonAndDrawToMask():
 
     # Turns mask upside down, this just happened to work best for my frame
     # with regards to which side the cable came out.
-    rotatedMask = mask.rotate(180)
-    epd.display_frame(epd.get_frame_buffer(rotatedMask))
-    # mask.save('test.png')
+    # rotatedMask = mask.rotate(180)
+    # epd.display_frame(epd.get_frame_buffer(rotatedMask))
+    mask.save('test.png')
     print('Weather display successfully refreshed at {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
 
 if __name__ == '__main__':

@@ -188,8 +188,8 @@ def parseJsonAndDrawToMask():
         draw.text((105, 70), 'BELOW ZERO', font=teenytinyfont, fill=0)
 
 
-    mask.paste(rainChance, (110, 78))
-    draw.text((127, 81), '{}%'.format(int(rainChancePercent)), font=smallfont, fill=0)
+    mask.paste(rainChance, (110, 83))
+    draw.text((127, 83), '{}%'.format(int(rainChancePercent)), font=smallfont, fill=0)
 
 
     mask.paste(refreshIcon, (91, 1))
@@ -237,7 +237,7 @@ def parseJsonAndDrawToMask():
         for i in range(66, 75):
             draw.line((i, 239, i, rain5h), fill=0, width=1)
     if(rain6h > 0):
-        for i in range(80, 89):
+        for i in range(80, 90):
             draw.line((i, 239, i, rain6h), fill=0, width=1)
     if(rain7h > 0):
         for i in range(94, 103):
