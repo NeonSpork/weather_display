@@ -177,15 +177,15 @@ def parseJsonAndDrawToMask():
     currentTemp = int(currentTemperature)
     if (currentTemp <= 9) and (currentTemp >= -9):
         # Centers the temperature when it is single digits
-        draw.text((120, 22), '{}'.format(currentTemp), font=bigfont, fill=0)
+        draw.text((120, 12), '{}'.format(currentTemp), font=bigfont, fill=0)
     elif (currentTemp >= 10):
-        draw.text((98, 22), '{}'.format(currentTemp), font=bigfont, fill=0)
+        draw.text((98, 12), '{}'.format(currentTemp), font=bigfont, fill=0)
     elif (currentTemp <= -10):
         # Adds text "BELOW ZERO" underneath, no space for a minus sign
         negativeCurrentTemp = (currentTemp * -1)
-        draw.text((98, 13), '{}'.format(negativeCurrentTemp),
+        draw.text((98, 3), '{}'.format(negativeCurrentTemp),
                   font=bigfont, fill=0)
-        draw.text((105, 67), 'BELOW ZERO', font=teenyfont, fill=0)
+        draw.text((105, 70), 'BELOW ZERO', font=teenytinyfont, fill=0)
 
 
     mask.paste(rainChance, (110, 78))
@@ -209,120 +209,120 @@ def parseJsonAndDrawToMask():
 
     # Precipitation lines
     # Black fill line for actual rain
-    rain1h = 249 - (rainAmount1*12)
-    rain2h = 249 - (rainAmount2*12)
-    rain3h = 249 - (rainAmount3*12)
-    rain4h = 249 - (rainAmount4*12)
-    rain5h = 249 - (rainAmount5*12)
-    rain6h = 249 - (rainAmount6*12)
-    rain7h = 249 - (rainAmount7*12)
-    rain8h = 249 - (rainAmount8*12)
-    rain9h = 249 - (rainAmount9*12)
-    rain10h = 249 - (rainAmount10*12)
-    rain11h = 249 - (rainAmount11*12)
-    rain12h = 249 - (rainAmount12*12)
+    rain1h = 239 - (rainAmount1*12)
+    rain2h = 239 - (rainAmount2*12)
+    rain3h = 239 - (rainAmount3*12)
+    rain4h = 239 - (rainAmount4*12)
+    rain5h = 239 - (rainAmount5*12)
+    rain6h = 239 - (rainAmount6*12)
+    rain7h = 239 - (rainAmount7*12)
+    rain8h = 239 - (rainAmount8*12)
+    rain9h = 239 - (rainAmount9*12)
+    rain10h = 239 - (rainAmount10*12)
+    rain11h = 239 - (rainAmount11*12)
+    rain12h = 239 - (rainAmount12*12)
     if(rain1h > 0):
-        draw.line((10, 249, 10, rain1h), fill=0, width=10)
+        draw.line((10, 239, 10, rain1h), fill=0, width=10)
     if(rain2h > 0):
-        draw.line((24, 249, 24, rain2h), fill=0, width=10)
+        draw.line((24, 239, 24, rain2h), fill=0, width=10)
     if(rain3h > 0):
-        draw.line((38, 249, 38, rain3h), fill=0, width=10)
+        draw.line((38, 239, 38, rain3h), fill=0, width=10)
     if(rain4h > 0):
-        draw.line((52, 249, 52, rain4h), fill=0, width=10)
+        draw.line((52, 239, 52, rain4h), fill=0, width=10)
     if(rain5h > 0):
-        draw.line((66, 249, 66, rain5h), fill=0, width=10)
+        draw.line((66, 239, 66, rain5h), fill=0, width=10)
     if(rain6h > 0):
-        draw.line((80, 249, 80, rain6h), fill=0, width=10)
+        draw.line((80, 239, 80, rain6h), fill=0, width=10)
     if(rain7h > 0):
-        draw.line((94, 249, 94, rain7h), fill=0, width=10)
+        draw.line((94, 239, 94, rain7h), fill=0, width=10)
     if(rain8h > 0):
-        draw.line((108, 249, 108, rain8h), fill=0, width=10)
+        draw.line((108, 239, 108, rain8h), fill=0, width=10)
     if(rain9h > 0):
-        draw.line((122, 249, 122, rain9h), fill=0, width=10)
+        draw.line((122, 239, 122, rain9h), fill=0, width=10)
     if(rain10h > 0):
-        draw.line((136, 249, 136, rain10h), fill=0, width=10)
+        draw.line((136, 239, 136, rain10h), fill=0, width=10)
     if(rain11h > 0):
-        draw.line((150, 249, 150, rain11h), fill=0, width=10)
+        draw.line((150, 239, 150, rain11h), fill=0, width=10)
     if(rain12h > 0):
-        draw.line((164, 249, 164, rain12h), fill=0, width=10)
+        draw.line((164, 239, 164, rain12h), fill=0, width=10)
     # Only outline for maximum possible rain
-    rainMax1h = 249 - (rainMaxAmount1*12)
-    rainMax2h = 249 - (rainMaxAmount2*12)
-    rainMax3h = 249 - (rainMaxAmount3*12)
-    rainMax4h = 249 - (rainMaxAmount4*12)
-    rainMax5h = 249 - (rainMaxAmount5*12)
-    rainMax6h = 249 - (rainMaxAmount6*12)
-    rainMax7h = 249 - (rainMaxAmount7*12)
-    rainMax8h = 249 - (rainMaxAmount8*12)
-    rainMax9h = 249 - (rainMaxAmount9*12)
-    rainMax10h = 249 - (rainMaxAmount10*12)
-    rainMax11h = 249 - (rainMaxAmount11*12)
-    rainMax12h = 249 - (rainMaxAmount12*12)
+    rainMax1h = 239 - (rainMaxAmount1*12)
+    rainMax2h = 239 - (rainMaxAmount2*12)
+    rainMax3h = 239 - (rainMaxAmount3*12)
+    rainMax4h = 239 - (rainMaxAmount4*12)
+    rainMax5h = 239 - (rainMaxAmount5*12)
+    rainMax6h = 239 - (rainMaxAmount6*12)
+    rainMax7h = 239 - (rainMaxAmount7*12)
+    rainMax8h = 239 - (rainMaxAmount8*12)
+    rainMax9h = 239 - (rainMaxAmount9*12)
+    rainMax10h = 239 - (rainMaxAmount10*12)
+    rainMax11h = 239 - (rainMaxAmount11*12)
+    rainMax12h = 239 - (rainMaxAmount12*12)
     if(rainMax1h > 0):
-        draw.line((10, 249, 10, rainMax1h), fill=0, width=1)
-        draw.line((10, 249, 19, 249), fill=0, width=1)
-        draw.line((19, 249, 19, rainMax1h), fill=0, width=1)
+        draw.line((10, 239, 10, rainMax1h), fill=0, width=1)
+        draw.line((10, 239, 19, 239), fill=0, width=1)
+        draw.line((19, 239, 19, rainMax1h), fill=0, width=1)
         draw.line((10, rainMax1h, 19, rainMax1h), fill=0, width=1)
     if(rainMax2h > 0):
-        draw.line((24, 249, 24, rainMax2h), fill=0, width=1)
-        draw.line((24, 249, 33, 249), fill=0, width=1)
-        draw.line((33, 249, 33, rainMax2h), fill=0, width=1)
+        draw.line((24, 239, 24, rainMax2h), fill=0, width=1)
+        draw.line((24, 239, 33, 239), fill=0, width=1)
+        draw.line((33, 239, 33, rainMax2h), fill=0, width=1)
         draw.line((24, rainMax2h, 33, rainMax2h), fill=0, width=1)
     if(rainMax3h > 0):
-        draw.line((38, 249, 38, rainMax3h), fill=0, width=1)
-        draw.line((38, 249, 47, 249), fill=0, width=1)
-        draw.line((47, 249, 47, rainMax3h), fill=0, width=1)
+        draw.line((38, 239, 38, rainMax3h), fill=0, width=1)
+        draw.line((38, 239, 47, 239), fill=0, width=1)
+        draw.line((47, 239, 47, rainMax3h), fill=0, width=1)
         draw.line((38, rainMax3h, 47, rainMax3h), fill=0, width=1)
     if(rainMax4h > 0):
-        draw.line((52, 249, 52, rainMax4h), fill=0, width=1)
-        draw.line((52, 249, 61, 249), fill=0, width=1)
-        draw.line((61, 249, 61, rainMax4h), fill=0, width=1)
+        draw.line((52, 239, 52, rainMax4h), fill=0, width=1)
+        draw.line((52, 239, 61, 239), fill=0, width=1)
+        draw.line((61, 239, 61, rainMax4h), fill=0, width=1)
         draw.line((52, rainMax4h, 61, rainMax4h), fill=0, width=1)
     if(rainMax5h > 0):
-        draw.line((66, 249, 66, rainMax5h), fill=0, width=1)
-        draw.line((66, 249, 75, 249), fill=0, width=1)
-        draw.line((75, 249, 75, rainMax5h), fill=0, width=1)
+        draw.line((66, 239, 66, rainMax5h), fill=0, width=1)
+        draw.line((66, 239, 75, 239), fill=0, width=1)
+        draw.line((75, 239, 75, rainMax5h), fill=0, width=1)
         draw.line((66, rainMax5h, 75, rainMax5h), fill=0, width=1)
     if(rainMax6h > 0):
-        draw.line((80, 249, 80, rainMax6h), fill=0, width=1)
-        draw.line((80, 249, 89, 249), fill=0, width=1)
-        draw.line((89, 249, 89, rainMax6h), fill=0, width=1)
+        draw.line((80, 239, 80, rainMax6h), fill=0, width=1)
+        draw.line((80, 239, 89, 239), fill=0, width=1)
+        draw.line((89, 239, 89, rainMax6h), fill=0, width=1)
         draw.line((80, rainMax6h, 89, rainMax6h), fill=0, width=1)
     if(rainMax7h > 0):
-        draw.line((94, 249, 94, rainMax7h), fill=0, width=1)
-        draw.line((94, 249, 103, 249), fill=0, width=1)
-        draw.line((103, 249, 103, rainMax7h), fill=0, width=1)
-        draw.line((94, 249, 103, rainMax7h), fill=0, width=1)
+        draw.line((94, 239, 94, rainMax7h), fill=0, width=1)
+        draw.line((94, 239, 103, 239), fill=0, width=1)
+        draw.line((103, 239, 103, rainMax7h), fill=0, width=1)
+        draw.line((94, 239, 103, rainMax7h), fill=0, width=1)
     if(rainMax8h > 0):
-        draw.line((108, 249, 108, rainMax8h), fill=0, width=1)
-        draw.line((108, 249, 117, 249), fill=0, width=1)
-        draw.line((117, 249, 117, rainMax8h), fill=0, width=1)
+        draw.line((108, 239, 108, rainMax8h), fill=0, width=1)
+        draw.line((108, 239, 117, 239), fill=0, width=1)
+        draw.line((117, 239, 117, rainMax8h), fill=0, width=1)
         draw.line((108, rainMax8h, 117, rainMax8h), fill=0, width=1)
     if(rainMax9h > 0):
-        draw.line((122, 249, 122, rainMax9h), fill=0, width=1)
-        draw.line((122, 249, 131, 249), fill=0, width=1)
-        draw.line((131, 249, 131, rainMax9h), fill=0, width=1)
+        draw.line((122, 239, 122, rainMax9h), fill=0, width=1)
+        draw.line((122, 239, 131, 239), fill=0, width=1)
+        draw.line((131, 239, 131, rainMax9h), fill=0, width=1)
         draw.line((122, rainMax9h, 131, rainMax9h), fill=0, width=1)
     if(rainMax10h > 0):
-        draw.line((136, 249, 136, rainMax10h), fill=0, width=1)
-        draw.line((136, 249, 145, 249), fill=0, width=1)
-        draw.line((145, 249, 145, rainMax10h), fill=0, width=1)
+        draw.line((136, 239, 136, rainMax10h), fill=0, width=1)
+        draw.line((136, 239, 145, 239), fill=0, width=1)
+        draw.line((145, 239, 145, rainMax10h), fill=0, width=1)
         draw.line((136, rainMax10h, 145, rainMax10h), fill=0, width=1)
     if(rainMax11h > 0):
-        draw.line((150, 249, 150, rainMax11h), fill=0, width=1)
-        draw.line((150, 249, 159, 249), fill=0, width=1)
-        draw.line((159, 249, 159, rainMax11h), fill=0, width=1)
+        draw.line((150, 239, 150, rainMax11h), fill=0, width=1)
+        draw.line((150, 239, 159, 239), fill=0, width=1)
+        draw.line((159, 239, 159, rainMax11h), fill=0, width=1)
         draw.line((150, rainMax11h, 159, rainMax11h), fill=0, width=1)
     if(rainMax12h > 0):
-        draw.line((164, 249, 164, rainMax12h), fill=0, width=1)
-        draw.line((164, 249, 173, 249), fill=0, width=1)
-        draw.line((173, 249, 173, rainMax12h), fill=0, width=1)
+        draw.line((164, 239, 164, rainMax12h), fill=0, width=1)
+        draw.line((164, 239, 173, 239), fill=0, width=1)
+        draw.line((173, 239, 173, rainMax12h), fill=0, width=1)
         draw.line((164, rainMax12h, 173, rainMax12h), fill=0, width=1)
 
-    mask.paste(windIcon, (0, 258))
-    mask.paste(rainLine, (8, 250))
-    mask.paste(twelveHrain, (1, 224))
-    draw.text((43, 256), '{}-{} m/s'.format(windSpeed, windMaxGust),
+    mask.paste(windIcon, (0, 248))
+    mask.paste(rainLine, (8, 240))
+    mask.paste(twelveHrain, (1, 214))
+    draw.text((43, 244), '{}-{} m/s'.format(windSpeed, windMaxGust),
               font=smallfont, fill=0)
 
 
