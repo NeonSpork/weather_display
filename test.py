@@ -129,8 +129,17 @@ def parseJsonAndDrawToMask():
 
     # Weather conditions and various icons
     # currentIcon = stats[0]['data']['next_1_hours']['summary']['symbol_code']
-    currentIcon = 'cloudy'
-    currentStatus = legend[currentIcon]['desc_en']
+    currentIcon = stats[0]['data']['next_1_hours']['summary']['symbol_code']
+    iconStatus = currentIcon
+    print(iconStatus[-4:])
+    if(iconStatus[-4:]=='_day'):
+        iconStatus = iconStatus.rstrip('_day')
+    if(iconStatus[-6:]=='_night'):
+        iconStatus = iconStatus.rstrip('_night')
+    if(iconStatus[-14:]=='_polartwilight'):
+        iconStatus = iconStatus.rstrip('_polartwilight')
+    print(iconStatus)
+    currentStatus = legend[iconStatus]['desc_en']
     rainChancePercent = stats[0]['data']['next_1_hours']['details']['probability_of_precipitation']
 
     conditionIcon = Image.open('yr_icons/{}.png'.format(currentIcon))
@@ -200,8 +209,8 @@ def parseJsonAndDrawToMask():
     draw.text((133, 92), '{}%'.format(int(rainChancePercent)), font=teenyfont, fill=0)
 
 
-    mask.paste(refreshIcon, (93, 85))
-    draw.text((106, 84), '{}'.format(lastUpdated),
+    mask.paste(refreshIcon, (91, 1))
+    draw.text((104, 1), '{}'.format(lastUpdated),
               font=teenytinyfont, fill=0)
     wrappedStatus = textwrap.fill(currentStatus, 19)
     draw.text((5, 104), '{}'.format(wrappedStatus), font=smallfont, fill=0)
