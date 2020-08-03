@@ -310,7 +310,9 @@ def parseJsonAndDrawToMask():
 
     # Turns mask upside down, this just happened to work best for my frame
     # with regards to which side the cable came out.
-    mask.save('test.png')
+    rotatedMask = mask.rotate(180)
+    epd.display_frame(epd.get_frame_buffer(rotatedMask))
+    print('Weather display successfully refreshed at {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
 
 if __name__ == '__main__':
     running = True
