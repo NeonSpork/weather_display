@@ -133,9 +133,9 @@ def parseJsonAndDrawToMask():
     rainLine = Image.open('icons/rainline.png')
     rainChance = Image.open('icons/rainChance.png')
     twelveHrain = Image.open('icons/twelveHrain.png')
-    next6hIcon = Image.open('icons/{}.png'.format(icon6h))
+    next6hIcon = Image.open('icons/weatherIcons/{}.png'.format(icon6h))
     sixhours = Image.open('icons/sixhours.png')
-    next12hIcon = Image.open('icons/{}.png'.format(icon12h))
+    next12hIcon = Image.open('icons/weatherIcons/{}.png'.format(icon12h))
     twelvehours = Image.open('icons/twelvehours.png')
 
     # Wind information
