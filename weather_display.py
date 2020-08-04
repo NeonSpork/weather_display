@@ -127,7 +127,7 @@ def parseJsonAndDrawToMask():
     currentStatus = legend[iconStatus]['desc_en']
     rainChancePercent = stats[0]['data']['next_1_hours']['details']['probability_of_precipitation']
 
-    conditionIcon = Image.open('icons/weatherIcons{}.png'.format(currentIcon))
+    conditionIcon = Image.open('icons/weatherIcons/{}.png'.format(currentIcon))
     refreshIcon = Image.open('icons/refresh.png')
     windIcon = Image.open('icons/windicon.png')
     rainLine = Image.open('icons/rainline.png')
