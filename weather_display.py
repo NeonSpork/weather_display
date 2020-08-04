@@ -118,7 +118,8 @@ def parseJsonAndDrawToMask():
     currentIcon = stats[0]['data']['next_1_hours']['summary']['symbol_code']
     iconStatus = currentIcon
     if(iconStatus[-4:]=='_day'):
-        iconStatus = iconStatus.rstrip('_day')
+        iconStatus = iconStatus.rstrip(iconStatus[-3:])
+        iconStatus = iconStatus.rstrip('_')
     if(iconStatus[-6:]=='_night'):
         iconStatus = iconStatus.rstrip('_night')
     if(iconStatus[-14:]=='_polartwilight'):

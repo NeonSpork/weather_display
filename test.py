@@ -92,10 +92,14 @@ def parseJsonAndDrawToMask():
     # Weather conditions and various icons
     # currentIcon = stats[0]['data']['next_1_hours']['summary']['symbol_code']
     currentIcon = stats[0]['data']['next_1_hours']['summary']['symbol_code']
-    iconStatus = currentIcon
-    print(iconStatus[-4:])
+    # iconStatus = currentIcon
+    iconStatus = 'partlycloudy_polartwilight'
+    print(iconStatus)
     if(iconStatus[-4:]=='_day'):
-        iconStatus = iconStatus.rstrip('_day')
+        print(iconStatus)
+        iconStatus = iconStatus.rstrip(iconStatus[-3:])
+        iconStatus = iconStatus.rstrip('_')
+        print(iconStatus)
     if(iconStatus[-6:]=='_night'):
         iconStatus = iconStatus.rstrip('_night')
     if(iconStatus[-14:]=='_polartwilight'):
