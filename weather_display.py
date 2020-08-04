@@ -127,16 +127,16 @@ def parseJsonAndDrawToMask():
     currentStatus = legend[iconStatus]['desc_en']
     rainChancePercent = stats[0]['data']['next_1_hours']['details']['probability_of_precipitation']
 
-    conditionIcon = Image.open('yr_icons/{}.png'.format(currentIcon))
-    refreshIcon = Image.open('yr_icons/refresh.png')
-    windIcon = Image.open('yr_icons/windicon.png')
-    rainLine = Image.open('yr_icons/rainline.png')
-    rainChance = Image.open('yr_icons/rainChance.png')
-    twelveHrain = Image.open('yr_icons/twelveHrain.png')
-    next6hIcon = Image.open('yr_icons/{}.png'.format(icon6h))
-    sixhours = Image.open('yr_icons/sixhours.png')
-    next12hIcon = Image.open('yr_icons/{}.png'.format(icon12h))
-    twelvehours = Image.open('yr_icons/twelvehours.png')
+    conditionIcon = Image.open('icons/weatherIcons{}.png'.format(currentIcon))
+    refreshIcon = Image.open('icons/refresh.png')
+    windIcon = Image.open('icons/windicon.png')
+    rainLine = Image.open('icons/rainline.png')
+    rainChance = Image.open('icons/rainChance.png')
+    twelveHrain = Image.open('icons/twelveHrain.png')
+    next6hIcon = Image.open('icons/{}.png'.format(icon6h))
+    sixhours = Image.open('icons/sixhours.png')
+    next12hIcon = Image.open('icons/{}.png'.format(icon12h))
+    twelvehours = Image.open('icons/twelvehours.png')
 
     # Wind information
     windSpeed = stats[0]['data']['instant']['details']['wind_speed']
