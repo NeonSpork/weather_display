@@ -18,7 +18,7 @@ Use at your own risk. It should work fine, but I can't guarantee no bugs :)
 
    You *could* use another size display, but you'd have to modify the code somewhat.
 
-* 8 GB micro SD card (with Raspian installed)
+* 8 GB micro SD card (with Raspberry Pi OS installed)
 
    Most SD cards should be just fine. Not sure what the minimum size could be, but I wouldn't go below 4 GB.
 
@@ -27,7 +27,7 @@ Use at your own risk. It should work fine, but I can't guarantee no bugs :)
    Whatever you want to make the frame out of really.
 
 ## Prepping the Raspberry Pi
-I did this on a bog standard Raspian install.
+I did this on a bog standard Raspberry Pi OS install.
 
 ### Setting up the e-Paper display
 I followed the step by step instructions on Waveshare's wiki:
@@ -115,8 +115,10 @@ Feel free to edit the display or change the data it displays as you please. You 
 Example:
 root[#][#][#][#].attrib['variableName']
 ```
+*PSA: THIS IS OUTDATED. EVERYTHING IS JSON NOW.*
+
 
 Make a cool case or something to make it look smooth for bonus points! Have fun!
 
 ## TODO
-* Maybe find a clever way to graphically display precipitation
+* Maybe find a clever way to graphically display precipitation - DONE!!! Precipitation is now displayed as a bar graph over the next 12 hours.
