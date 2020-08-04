@@ -312,7 +312,7 @@ def parseJsonAndDrawToMask():
 
     mask.paste(windIcon, (0, 248))
     mask.paste(rainLine, (8, 240))
-    mask.paste(twelveHrain, (1, 214))
+    mask.paste(twelveHrain, (1, 212))
     draw.text((43, 244), '{}-{} m/s'.format(windSpeed, windMaxGust),
               font=smallfont, fill=0)
 
