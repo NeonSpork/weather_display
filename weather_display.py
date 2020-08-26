@@ -209,6 +209,55 @@ def parseJsonAndDrawToMask():
     mask.paste(next12hIcon.resize((48, 48)), (110, 144))
 
     # Precipitation lines
+    # Set max to 4 mm just to make it look cleaner if lots of rain
+    if (rainAmount1 > 4):
+        rainAmount1 = 4
+    if (rainAmount2 > 4):
+        rainAmount2 = 4
+    if (rainAmount3 > 4):
+        rainAmount3 = 4
+    if (rainAmount4 > 4):
+        rainAmount4 = 4
+    if (rainAmount5 > 4):
+        rainAmount5 = 4
+    if (rainAmount6 > 4):
+        rainAmount6 = 4
+    if (rainAmount7 > 4):
+        rainAmount7 = 4
+    if (rainAmount8 > 4):
+        rainAmount8 = 4
+    if (rainAmount9 > 4):
+        rainAmount9 = 4
+    if (rainAmount10 > 4):
+        rainAmount10 = 4
+    if (rainAmount11 > 4):
+        rainAmount11 = 4
+    if (rainAmount12 > 4):
+        rainAmount12 = 4
+    if (rainMax1 > 4):
+        rainMax1 = 4
+    if (rainMax2 > 4):
+        rainMax2 = 4
+    if (rainMax3 > 4):
+        rainMax3 = 4
+    if (rainMax4 > 4):
+        rainMax4 = 4
+    if (rainMax5 > 4):
+        rainMax5 = 4
+    if (rainMax6 > 4):
+        rainMax6 = 4
+    if (rainMax7 > 4):
+        rainMax7 = 4
+    if (rainMax8 > 4):
+        rainMax8 = 4
+    if (rainMax9 > 4):
+        rainMax9 = 4
+    if (rainMax10 > 4):
+        rainMax10 = 4
+    if (rainMax11 > 4):
+        rainMax11 = 4
+    if (rainMax12 > 4):
+        rainMax12 = 4
     # Black fill line for actual rain
     rain1h = 239 - (rainAmount1*10)
     rain2h = 239 - (rainAmount2*10)
