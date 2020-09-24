@@ -10,9 +10,9 @@ Also this is only in metric. Sorry I'm not sorry.
 Use at your own risk. It should work fine, but I can't guarantee no bugs :)
 
 ## Equipment used
-* Raspberry Pi Zero W
+* ~~Raspberry Pi Zero W~~ Raspberry Pi 3
 
-   You could use any Raspberry Pi with GPIO pins and wifi capabilites. I chose the Zero W due to its small size.
+   You could use any Raspberry Pi with GPIO pins and wifi capabilites. ~~I chose the Zero W due to its small size.~~ My Raspberry Pi Zero W died, so I plonked a normal Pi3 in and it works just fine.
 
 * Waveshare 2.7 inch e-Paper HAT display
 
