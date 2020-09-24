@@ -58,15 +58,7 @@ $ sudo cp FreeArial.ttf /usr/share/fonts/truetype/freefont
 ### Weather data
 This code uses weather data from yr.no (a collaboration between the Norwegian Meteorological Institute and the National Broadcasting Channel in Norway). They publish their data for free, but with the caveat that you follow their user requirements [found here.](http://om.yr.no/info/verdata/free-weather-data/ "Information about the free weather data service")
 
-Search for your desired location on yr.no, then add "forecast.xml" to the end of the url.
-
-Example:
-
-Weather page for the South Pole https://www.yr.no/place/Antarctica/Other/South_Pole~6942239/
-
-XML file for the South Pole https://www.yr.no/place/Antarctica/Other/South_Pole~6942239/forecast.xml
-
-Then replace the example url with your url in the code!
+The old XML access has been phased out. Check out developer.yr.no for more information, I'm working on updating the how-to in this readme!
 
 ## Running the code
 Copy the whole folder onto your Pi.
