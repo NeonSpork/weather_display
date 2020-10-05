@@ -102,12 +102,12 @@ Hit finish and reboot.
 If you need to stop the script for whatever reason while using Option 2 you'll need to either use VNC and kill it via the task manager or via terminal by for example using the ps -A command and killing the python script.
 
 ## Make it your own
-Feel free to edit the display or change the data it displays as you please. You can easily access anything in the .xml file by calling the correct tree:
+Feel free to edit the display or change the data it displays as you please. You can easily access anything in the .json file by importing it and working your way down to the correct variable:
 ```python
 Example:
-root[#][#][#][#].attrib['variableName']
+json_data['variableName']['subVariableName']
 ```
-*PSA: THIS IS OUTDATED. EVERYTHING IS JSON NOW.*
+See weather_data.py for examples!
 
 
 Make a cool case or something to make it look smooth for bonus points! Have fun!
