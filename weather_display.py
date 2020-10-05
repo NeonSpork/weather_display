@@ -72,7 +72,8 @@ def updateWeatherUrl():
     while not urlReady:
         url = urllib2.urlopen(
             'https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=58.8474&lon=5.7166')
-        # Exchange the link above with your location.
+        # Exchange the link above with your location. 
+        # Essentially you just replace the latitude and longitude with the location you want.
         if(url.getcode() == 200):
             urlReady = True
             attempts = 1
