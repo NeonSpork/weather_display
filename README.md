@@ -114,3 +114,4 @@ Make a cool case or something to make it look smooth for bonus points! Have fun!
 
 ## TODO
 * Maybe find a clever way to graphically display precipitation - DONE!!! Precipitation is now displayed as a bar graph over the next 12 hours.
+** DONE: is currently displayed as a badass bar chart that auto caps at 4 mm rain within the next hour
