@@ -17,7 +17,7 @@ import epd2in7
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
-import urllib2
+import urllib.request, urllib.error, urllib.parse
 import json
 
 
@@ -55,7 +55,7 @@ bigfont = ImageFont.truetype(
 # data = 0
 # mask = 0
 
-urlLegend = urllib2.urlopen('https://api.met.no/weatherapi/weathericon/2.0/legends')
+urlLegend = urllib.request.urlopen('https://api.met.no/weatherapi/weathericon/2.0/legends')
 legendUrl = urlLegend.read()
 legend = json.loads(legendUrl)
 
@@ -70,7 +70,7 @@ def updateWeatherUrl():
     # attempts = 1
     urlReady = False
     while not urlReady:
-        url = urllib2.urlopen(
+        url = urllib.request.urlopen(
             'https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=58.8474&lon=5.7166')
         # Exchange the link above with your location. 
         # Essentially you just replace the latitude and longitude with the location you want.
@@ -80,14 +80,14 @@ def updateWeatherUrl():
             dataUrl = url.read()
             global data
             data = json.loads(dataUrl)
-            print('{} Weather data URL successfully opened.'
-                  .format(data['properties']['meta']['updated_at']))
+            print(('{} Weather data URL successfully opened.'
+                  .format(data['properties']['meta']['updated_at'])))
         else:
-            print('Error retrieving data', url.getcode())
+            print(('Error retrieving data', url.getcode()))
             attempts += 1
             if attempts <= 100:
-                print('Retrying in 10 seconds.'
-                      ' (Attempt {} of 100)'.format(attempts))
+                print(('Retrying in 10 seconds.'
+                      ' (Attempt {} of 100)'.format(attempts)))
                 time.sleep(10)
             elif attempts > 100:
                 raise RuntimeError('Please check your internet connection '
@@ -235,30 +235,30 @@ def parseJsonAndDrawToMask():
         rainAmount11 = 4
     if (rainAmount12 > 4):
         rainAmount12 = 4
-    if (rainMax1 > 4):
-        rainMax1 = 4
-    if (rainMax2 > 4):
-        rainMax2 = 4
-    if (rainMax3 > 4):
-        rainMax3 = 4
-    if (rainMax4 > 4):
-        rainMax4 = 4
-    if (rainMax5 > 4):
-        rainMax5 = 4
-    if (rainMax6 > 4):
-        rainMax6 = 4
-    if (rainMax7 > 4):
-        rainMax7 = 4
-    if (rainMax8 > 4):
-        rainMax8 = 4
-    if (rainMax9 > 4):
-        rainMax9 = 4
-    if (rainMax10 > 4):
-        rainMax10 = 4
-    if (rainMax11 > 4):
-        rainMax11 = 4
-    if (rainMax12 > 4):
-        rainMax12 = 4
+    if (rainMaxAmount1 > 4):
+        rainMaxAmount1 = 4
+    if (rainMaxAmount2 > 4):
+        rainMaxAmount2 = 4
+    if (rainMaxAmount3 > 4):
+        rainMaxAmount3 = 4
+    if (rainMaxAmount4 > 4):
+        rainMaxAmount4 = 4
+    if (rainMaxAmount5 > 4):
+        rainMaxAmount5 = 4
+    if (rainMaxAmount6 > 4):
+        rainMaxAmount6 = 4
+    if (rainMaxAmount7 > 4):
+        rainMaxAmount7 = 4
+    if (rainMaxAmount8 > 4):
+        rainMaxAmount8 = 4
+    if (rainMaxAmount9 > 4):
+        rainMaxAmount9 = 4
+    if (rainMaxAmount10 > 4):
+        rainMaxAmount10 = 4
+    if (rainMaxAmount11 > 4):
+        rainMaxAmount11 = 4
+    if (rainMaxAmount12 > 4):
+        rainMaxAmount12 = 4
     # Black fill line for actual rain
     rain1h = 239 - (rainAmount1*10)
     rain2h = 239 - (rainAmount2*10)
@@ -389,14 +389,14 @@ def parseJsonAndDrawToMask():
               font=smallfont, fill=0)
 
 
-    print('Successfully parsed json file and created mask. {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
+    print(('Successfully parsed json file and created mask. {}'.format(time.strftime('%d%m%y-%H:%M:%S'))))
     # epd.display_frame(epd.get_frame_buffer(mask))
 
     # Turns mask upside down, this just happened to work best for my frame
     # with regards to which side the cable came out.
     rotatedMask = mask.rotate(180)
     epd.display_frame(epd.get_frame_buffer(rotatedMask))
-    print('Weather display successfully refreshed at {}'.format(time.strftime('%d%m%y-%H:%M:%S')))
+    print(('Weather display successfully refreshed at {}'.format(time.strftime('%d%m%y-%H:%M:%S'))))
 
 
 # def printMaskToEinkScreen():
