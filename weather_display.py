@@ -144,30 +144,10 @@ def parseJsonAndDrawToMask():
     windMaxGust = stats[0]['data']['instant']['details']['wind_speed_of_gust']
 
     # Precipitation info
-    rainAmount1 = stats[0]['data']['next_1_hours']['details']['precipitation_amount']
-    rainAmount2 = stats[1]['data']['next_1_hours']['details']['precipitation_amount']
-    rainAmount3 = stats[2]['data']['next_1_hours']['details']['precipitation_amount']
-    rainAmount4 = stats[3]['data']['next_1_hours']['details']['precipitation_amount']
-    rainAmount5 = stats[4]['data']['next_1_hours']['details']['precipitation_amount']
-    rainAmount6 = stats[5]['data']['next_1_hours']['details']['precipitation_amount']
-    rainAmount7 = stats[6]['data']['next_1_hours']['details']['precipitation_amount']
-    rainAmount8 = stats[7]['data']['next_1_hours']['details']['precipitation_amount']
-    rainAmount9 = stats[8]['data']['next_1_hours']['details']['precipitation_amount']
-    rainAmount10 = stats[9]['data']['next_1_hours']['details']['precipitation_amount']
-    rainAmount11 = stats[10]['data']['next_1_hours']['details']['precipitation_amount']
-    rainAmount12 = stats[11]['data']['next_1_hours']['details']['precipitation_amount']
-    rainMaxAmount1 = stats[0]['data']['next_1_hours']['details']['precipitation_amount_max']
-    rainMaxAmount2 = stats[1]['data']['next_1_hours']['details']['precipitation_amount_max']
-    rainMaxAmount3 = stats[2]['data']['next_1_hours']['details']['precipitation_amount_max']
-    rainMaxAmount4 = stats[3]['data']['next_1_hours']['details']['precipitation_amount_max']
-    rainMaxAmount5 = stats[4]['data']['next_1_hours']['details']['precipitation_amount_max']
-    rainMaxAmount6 = stats[5]['data']['next_1_hours']['details']['precipitation_amount_max']
-    rainMaxAmount7 = stats[6]['data']['next_1_hours']['details']['precipitation_amount_max']
-    rainMaxAmount8 = stats[7]['data']['next_1_hours']['details']['precipitation_amount_max']
-    rainMaxAmount9 = stats[8]['data']['next_1_hours']['details']['precipitation_amount_max']
-    rainMaxAmount10 = stats[9]['data']['next_1_hours']['details']['precipitation_amount_max']
-    rainMaxAmount11 = stats[10]['data']['next_1_hours']['details']['precipitation_amount_max']
-    rainMaxAmount12 = stats[11]['data']['next_1_hours']['details']['precipitation_amount_max']
+    rainAmount = [min(stats[i]['data']['next_1_hours']['details']['precipitation_amount'],4) for i in range(12)]
+
+    rainMaxAmount = [min(stats[i]['data']['next_1_hours']['details']['precipitation_amount_max'],4) for i in range(12)]
+    
     # Coordinates are X, Y:
     # 0, 0 is top left of screen 176, 264 is bottom right
     # global mask
@@ -189,10 +169,8 @@ def parseJsonAndDrawToMask():
                   font=bigfont, fill=0)
         draw.text((105, 70), 'BELOW ZERO', font=teenytinyfont, fill=0)
 
-
     mask.paste(rainChance, (110, 83))
     draw.text((127, 83), '{}%'.format(int(rainChancePercent)), font=smallfont, fill=0)
-
 
     mask.paste(refreshIcon, (91, 1))
     draw.text((104, 1), '{}'.format(lastUpdated),
@@ -209,178 +187,37 @@ def parseJsonAndDrawToMask():
     draw.text((110, 162), '{}'.format(next12hTemp), font=smallfont, fill=0)
     mask.paste(next12hIcon.resize((48, 48)), (110, 144))
 
-    # Precipitation lines
-    # Set max to 4 mm just to make it look cleaner if lots of rain
-    if (rainAmount1 > 4):
-        rainAmount1 = 4
-    if (rainAmount2 > 4):
-        rainAmount2 = 4
-    if (rainAmount3 > 4):
-        rainAmount3 = 4
-    if (rainAmount4 > 4):
-        rainAmount4 = 4
-    if (rainAmount5 > 4):
-        rainAmount5 = 4
-    if (rainAmount6 > 4):
-        rainAmount6 = 4
-    if (rainAmount7 > 4):
-        rainAmount7 = 4
-    if (rainAmount8 > 4):
-        rainAmount8 = 4
-    if (rainAmount9 > 4):
-        rainAmount9 = 4
-    if (rainAmount10 > 4):
-        rainAmount10 = 4
-    if (rainAmount11 > 4):
-        rainAmount11 = 4
-    if (rainAmount12 > 4):
-        rainAmount12 = 4
-    if (rainMaxAmount1 > 4):
-        rainMaxAmount1 = 4
-    if (rainMaxAmount2 > 4):
-        rainMaxAmount2 = 4
-    if (rainMaxAmount3 > 4):
-        rainMaxAmount3 = 4
-    if (rainMaxAmount4 > 4):
-        rainMaxAmount4 = 4
-    if (rainMaxAmount5 > 4):
-        rainMaxAmount5 = 4
-    if (rainMaxAmount6 > 4):
-        rainMaxAmount6 = 4
-    if (rainMaxAmount7 > 4):
-        rainMaxAmount7 = 4
-    if (rainMaxAmount8 > 4):
-        rainMaxAmount8 = 4
-    if (rainMaxAmount9 > 4):
-        rainMaxAmount9 = 4
-    if (rainMaxAmount10 > 4):
-        rainMaxAmount10 = 4
-    if (rainMaxAmount11 > 4):
-        rainMaxAmount11 = 4
-    if (rainMaxAmount12 > 4):
-        rainMaxAmount12 = 4
     # Black fill line for actual rain
-    rain1h = 239 - (rainAmount1*10)
-    rain2h = 239 - (rainAmount2*10)
-    rain3h = 239 - (rainAmount3*10)
-    rain4h = 239 - (rainAmount4*10)
-    rain5h = 239 - (rainAmount5*10)
-    rain6h = 239 - (rainAmount6*10)
-    rain7h = 239 - (rainAmount7*10)
-    rain8h = 239 - (rainAmount8*10)
-    rain9h = 239 - (rainAmount9*10)
-    rain10h = 239 - (rainAmount10*10)
-    rain11h = 239 - (rainAmount11*10)
-    rain12h = 239 - (rainAmount12*10)
-    if(rain1h > 0):
-        for i in range(10, 19):
-            draw.line((i, 239, i, rain1h), fill=0, width=1)
-    if(rain2h > 0):
-        for i in range(24, 33):
-            draw.line((i, 239, i, rain2h), fill=0, width=1)
-    if(rain3h > 0):
-        for i in range(38, 47):
-            draw.line((i, 239, i, rain3h), fill=0, width=1)
-    if(rain4h > 0):
-        for i in range(52, 61):
-            draw.line((i, 239, i, rain4h), fill=0, width=1)
-    if(rain5h > 0):
-        for i in range(66, 75):
-            draw.line((i, 239, i, rain5h), fill=0, width=1)
-    if(rain6h > 0):
-        for i in range(80, 90):
-            draw.line((i, 239, i, rain6h), fill=0, width=1)
-    if(rain7h > 0):
-        for i in range(94, 103):
-            draw.line((i, 239, i, rain7h), fill=0, width=1)
-    if(rain8h > 0):
-        for i in range(108, 117):
-            draw.line((i, 239, i, rain8h), fill=0, width=1)
-    if(rain9h > 0):
-        for i in range(122, 131):
-            draw.line((i, 239, i, rain9h), fill=0, width=1)
-    if(rain10h > 0):
-        for i in range(136, 145):
-            draw.line((i, 239, i, rain10h), fill=0, width=1)
-    if(rain11h > 0):
-        for i in range(150, 159):
-            draw.line((i, 239, i, rain11h), fill=0, width=1)
-    if(rain12h > 0):
-        for i in range(164, 173):
-            draw.line((i, 239, i, rain12h), fill=0, width=1)
+    rainh = [239 - (ra*10) for ra in rainAmount]
+    
+    diagram_intervals = [
+        (10,19),
+        (24,33),
+        (38,47),
+        (52,61),
+        (66,75),
+        (80,90),
+        (94,103),
+        (108,117),
+        (122,131),
+        (136,145),
+        (150,159),
+        (164,173),
+    ]
+
+    for rain_amount, interval in zip(rainh,diagram_intervals):
+        for i in range(*interval):
+            draw.line((i,239,i,rain_amount), fill=0, width=1)
+
     # Only outline for maximum possible rain
-    rainMax1h = 239 - (rainMaxAmount1*10)
-    rainMax2h = 239 - (rainMaxAmount2*10)
-    rainMax3h = 239 - (rainMaxAmount3*10)
-    rainMax4h = 239 - (rainMaxAmount4*10)
-    rainMax5h = 239 - (rainMaxAmount5*10)
-    rainMax6h = 239 - (rainMaxAmount6*10)
-    rainMax7h = 239 - (rainMaxAmount7*10)
-    rainMax8h = 239 - (rainMaxAmount8*10)
-    rainMax9h = 239 - (rainMaxAmount9*10)
-    rainMax10h = 239 - (rainMaxAmount10*10)
-    rainMax11h = 239 - (rainMaxAmount11*10)
-    rainMax12h = 239 - (rainMaxAmount12*10)
-    if(rainMax1h > 0):
-        draw.line((10, 239, 10, rainMax1h), fill=0, width=1)
-        draw.line((10, 239, 19, 239), fill=0, width=1)
-        draw.line((19, 239, 19, rainMax1h), fill=0, width=1)
-        draw.line((10, rainMax1h, 19, rainMax1h), fill=0, width=1)
-    if(rainMax2h > 0):
-        draw.line((24, 239, 24, rainMax2h), fill=0, width=1)
-        draw.line((24, 239, 33, 239), fill=0, width=1)
-        draw.line((33, 239, 33, rainMax2h), fill=0, width=1)
-        draw.line((24, rainMax2h, 33, rainMax2h), fill=0, width=1)
-    if(rainMax3h > 0):
-        draw.line((38, 239, 38, rainMax3h), fill=0, width=1)
-        draw.line((38, 239, 47, 239), fill=0, width=1)
-        draw.line((47, 239, 47, rainMax3h), fill=0, width=1)
-        draw.line((38, rainMax3h, 47, rainMax3h), fill=0, width=1)
-    if(rainMax4h > 0):
-        draw.line((52, 239, 52, rainMax4h), fill=0, width=1)
-        draw.line((52, 239, 61, 239), fill=0, width=1)
-        draw.line((61, 239, 61, rainMax4h), fill=0, width=1)
-        draw.line((52, rainMax4h, 61, rainMax4h), fill=0, width=1)
-    if(rainMax5h > 0):
-        draw.line((66, 239, 66, rainMax5h), fill=0, width=1)
-        draw.line((66, 239, 75, 239), fill=0, width=1)
-        draw.line((75, 239, 75, rainMax5h), fill=0, width=1)
-        draw.line((66, rainMax5h, 75, rainMax5h), fill=0, width=1)
-    if(rainMax6h > 0):
-        draw.line((80, 239, 80, rainMax6h), fill=0, width=1)
-        draw.line((80, 239, 89, 239), fill=0, width=1)
-        draw.line((89, 239, 89, rainMax6h), fill=0, width=1)
-        draw.line((80, rainMax6h, 89, rainMax6h), fill=0, width=1)
-    if(rainMax7h > 0):
-        draw.line((94, 239, 94, rainMax7h), fill=0, width=1)
-        draw.line((94, 239, 103, 239), fill=0, width=1)
-        draw.line((103, 239, 103, rainMax7h), fill=0, width=1)
-        draw.line((94, rainMax7h, 103, rainMax7h), fill=0, width=1)
-    if(rainMax8h > 0):
-        draw.line((108, 239, 108, rainMax8h), fill=0, width=1)
-        draw.line((108, 239, 117, 239), fill=0, width=1)
-        draw.line((117, 239, 117, rainMax8h), fill=0, width=1)
-        draw.line((108, rainMax8h, 117, rainMax8h), fill=0, width=1)
-    if(rainMax9h > 0):
-        draw.line((122, 239, 122, rainMax9h), fill=0, width=1)
-        draw.line((122, 239, 131, 239), fill=0, width=1)
-        draw.line((131, 239, 131, rainMax9h), fill=0, width=1)
-        draw.line((122, rainMax9h, 131, rainMax9h), fill=0, width=1)
-    if(rainMax10h > 0):
-        draw.line((136, 239, 136, rainMax10h), fill=0, width=1)
-        draw.line((136, 239, 145, 239), fill=0, width=1)
-        draw.line((145, 239, 145, rainMax10h), fill=0, width=1)
-        draw.line((136, rainMax10h, 145, rainMax10h), fill=0, width=1)
-    if(rainMax11h > 0):
-        draw.line((150, 239, 150, rainMax11h), fill=0, width=1)
-        draw.line((150, 239, 159, 239), fill=0, width=1)
-        draw.line((159, 239, 159, rainMax11h), fill=0, width=1)
-        draw.line((150, rainMax11h, 159, rainMax11h), fill=0, width=1)
-    if(rainMax12h > 0):
-        draw.line((164, 239, 164, rainMax12h), fill=0, width=1)
-        draw.line((164, 239, 173, 239), fill=0, width=1)
-        draw.line((173, 239, 173, rainMax12h), fill=0, width=1)
-        draw.line((164, rainMax12h, 173, rainMax12h), fill=0, width=1)
+    # rainMaxH = [239 - (max_rain*10) for max_rain in rainMaxAmount]
+    rainMaxH = map(lambda x: 239 - (x*10), rainMaxAmount)
+
+    for rain_max, interval in zip(rainMaxH,diagram_intervals):
+        draw.line((interval[0], 239, interval[0], rain_max), fill=0, width=1)
+        draw.line((interval[0], 239, interval[1], 239), fill=0, width=1)
+        draw.line((interval[1], 239, interval[1], rain_max), fill=0, width=1)
+        draw.line((interval[0], rain_max, interval[1], rain_max), fill=0, width=1)
 
     mask.paste(windIcon, (0, 248))
     mask.paste(rainLine, (8, 240))
