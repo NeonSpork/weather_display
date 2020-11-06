@@ -5,5 +5,5 @@
 
 cd /
 cd home/pi/YOUR_FOLDER/weather_display
-python weather_display.py
+python3 weather_display.py
 cd /
