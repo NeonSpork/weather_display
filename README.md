@@ -42,16 +42,16 @@ IMPORTANT - Make sure your Raspberry Pi has SPI enabled:
 ```
 $ sudo raspi-config
 ```
-Go to 5 Interfacing options
-P4 SPI - Enable/disable
-Choose Enable, confirm and exit.
+Go to `5 Interfacing options`  
+`P4 SPI - Enable/disable`  
+Choose `Enable`, confirm and exit.
 
 ### Copying the code
 Once the necessary libraries are set up for the display, you *should* be able to just copy the entire file onto your pi and run the python script. Make sure you also copy the 'yr_icons' folder, since that's where the code grabs the icons from. The icons were also graciously provided by Yr, I just processed them slightly to make them work better with the e-Paper display. *Sidenote: if you do improve upon the icons in any way or notice something off, let me know!*
 
 ### Setting up the font
-You can use any .ttf font that tickles your fancy, but you may need to tweak the code. I chose Arial for my display because I enjoy how it looks. The FreeArial.ttf file is included in the repository, and it needs to be copied to **/usr/share/fonts/truetype/freefont** on your Pi.
-```
+You can use any .ttf font that tickles your fancy, but you may need to tweak the code. I chose Arial for my display because I enjoy how it looks. The FreeArial.ttf file is included in the repository, and it needs to be copied to `/usr/share/fonts/truetype/freefont` on your Pi.
+```bash
 $ sudo cp FreeArial.ttf /usr/share/fonts/truetype/freefont
 ```
 
@@ -69,16 +69,16 @@ Stop the code with keyboard interrupt Ctrl+C in the terminal.
 Use the launcher.sh script to start the python script automatically at reboot:
 
 First make a logs directory. Open the terminal and navigate to the weather_display folder and make the directory.
-```
+```bash
 $ cd /home/Pi/YOUR_FOLDER/weather_display
 $ mkdir logs
 ```
 Open crontab.
-```
+```bash
 $ sudo crontab -e
 ```
 Add the following line, replacing YOUR_FOLDER with whatever directory you placed the weather_display folder in:
-```
+```bash
 @reboot sleep 60 && sh /home/pi/YOUR_FOLDER/weather_display/launcher.sh >/home/pi/YOUR_FOLDER/weather_display/logs/cronlog 2>&1
 ```
 (the 1 minute sleep is to give the pi time to wake up, otherwise I've found the script fails to launch!)
@@ -86,7 +86,7 @@ Then hit Ctrl+X to save, Y to confirm and Enter to exit.
 The launcher shell will navigate to the correct folder and run the python script. If for whatever reason it doesn't work, the errors will be logged in a text file in /weather_display/logs.
 
 Once that is done, it's necessary to enable the option to delay boot until network is established (otherwise you get weird errors).
-```
+```bash
 $ sudo raspi-config
 ```
 Then navigate to option 3 - Boot options
