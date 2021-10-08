@@ -4,7 +4,7 @@ This is a short step-by-step of how to set up a simple weather display with the 
 
 Also this is only in metric. Sorry I'm not sorry.
 
-![alt text](https://raw.githubusercontent.com/NeonSpork/weather_display/master/test.png "Example screen")
+![alt text](https://raw.githubusercontent.com/NeonSpork/weather_display/master/example.png "Example screen")
 
 #### Disclaimer
 Use at your own risk. It should work fine, but I can't guarantee no bugs :)
