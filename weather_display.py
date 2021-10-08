@@ -17,7 +17,9 @@ import epd2in7
 from PIL import Image
 from PIL import ImageFont
 from PIL import ImageDraw
-import urllib.request, urllib.error, urllib.parse
+import urllib.request
+import urllib.error
+import urllib.parse
 import json
 
 
@@ -55,9 +57,11 @@ bigfont = ImageFont.truetype(
 # data = 0
 # mask = 0
 
-urlLegend = urllib.request.urlopen('https://api.met.no/weatherapi/weathericon/2.0/legends')
+urlLegend = urllib.request.urlopen(
+    'https://api.met.no/weatherapi/weathericon/2.0/legends')
 legendUrl = urlLegend.read()
 legend = json.loads(legendUrl)
+
 
 def updateWeatherUrl():
     """Opens the json file from www.yr.no
@@ -72,7 +76,7 @@ def updateWeatherUrl():
     while not urlReady:
         url = urllib.request.urlopen(
             'https://api.met.no/weatherapi/locationforecast/2.0/complete?lat=58.8474&lon=5.7166')
-        # Exchange the link above with your location. 
+        # Exchange the link above with your location.
         # Essentially you just replace the latitude and longitude with the location you want.
         if(url.getcode() == 200):
             urlReady = True
@@ -103,30 +107,32 @@ def parseJsonAndDrawToMask():
     """
     lastUpdated = time.strftime('%d.%m.%y %H:%M')
     stats = data['properties']['timeseries']
-
-
+    weatherData = stats[0]['data']
+    instantWeatherData = weatherData['instant']['details']
+    oneHourWeatherData = weatherData['next_1_hours']
+    sixHourWeatherData = weatherData['next_6_hours']
     # Temperature related variables:
     # Five total periods: current temperature, and the four next
     # 6 hour periods. (FirstPeriod, SecondPeriod, etc)
-    currentTemperature = stats[0]['data']['instant']['details']['air_temperature']
+    currentTemperature = instantWeatherData['air_temperature']
 
-    next6hTemp = stats[0]['data']['next_6_hours']['details']['air_temperature_max']
-    icon6h = stats[0]['data']['next_6_hours']['summary']['symbol_code']
+    next6hTemp = sixHourWeatherData['details']['air_temperature_max']
+    icon6h = sixHourWeatherData['summary']['symbol_code']
     next12hTemp = stats[11]['data']['instant']['details']['air_temperature']
-    icon12h = stats[0]['data']['next_12_hours']['summary']['symbol_code']
+    icon12h = weatherData['next_12_hours']['summary']['symbol_code']
 
     # Weather conditions and various icons
-    currentIcon = stats[0]['data']['next_1_hours']['summary']['symbol_code']
+    currentIcon = oneHourWeatherData['summary']['symbol_code']
     iconStatus = currentIcon
-    if(iconStatus[-4:]=='_day'):
+    if(iconStatus[-4:] == '_day'):
         iconStatus = iconStatus.rstrip(iconStatus[-3:])
         iconStatus = iconStatus.rstrip('_')
-    if(iconStatus[-6:]=='_night'):
+    if(iconStatus[-6:] == '_night'):
         iconStatus = iconStatus.rstrip('_night')
-    if(iconStatus[-14:]=='_polartwilight'):
+    if(iconStatus[-14:] == '_polartwilight'):
         iconStatus = iconStatus.rstrip('_polartwilight')
     currentStatus = legend[iconStatus]['desc_en']
-    rainChancePercent = stats[0]['data']['next_1_hours']['details']['probability_of_precipitation']
+    rainChancePercent = oneHourWeatherData['details']['probability_of_precipitation']
 
     conditionIcon = Image.open('icons/weatherIcons/{}.png'.format(currentIcon))
     refreshIcon = Image.open('icons/refresh.png')
@@ -140,14 +146,16 @@ def parseJsonAndDrawToMask():
     twelvehours = Image.open('icons/twelvehours.png')
 
     # Wind information
-    windSpeed = stats[0]['data']['instant']['details']['wind_speed']
-    windMaxGust = stats[0]['data']['instant']['details']['wind_speed_of_gust']
+    windSpeed = instantWeatherData['wind_speed']
+    windMaxGust = instantWeatherData['wind_speed_of_gust']
 
     # Precipitation info
-    rainAmount = [min(stats[i]['data']['next_1_hours']['details']['precipitation_amount'],4) for i in range(12)]
+    rainAmount = [min(stats[i]['data']['next_1_hours']['details']
+                      ['precipitation_amount'], 4) for i in range(12)]
 
-    rainMaxAmount = [min(stats[i]['data']['next_1_hours']['details']['precipitation_amount_max'],4) for i in range(12)]
-    
+    rainMaxAmount = [min(stats[i]['data']['next_1_hours']['details']
+                         ['precipitation_amount_max'], 4) for i in range(12)]
+
     # Coordinates are X, Y:
     # 0, 0 is top left of screen 176, 264 is bottom right
     # global mask
@@ -170,15 +178,14 @@ def parseJsonAndDrawToMask():
         draw.text((105, 70), 'BELOW ZERO', font=teenytinyfont, fill=0)
 
     mask.paste(rainChance, (110, 83))
-    draw.text((127, 83), '{}%'.format(int(rainChancePercent)), font=smallfont, fill=0)
+    draw.text((127, 83), '{}%'.format(
+        int(rainChancePercent)), font=smallfont, fill=0)
 
     mask.paste(refreshIcon, (91, 1))
     draw.text((104, 1), '{}'.format(lastUpdated),
               font=teenytinyfont, fill=0)
     wrappedStatus = textwrap.fill(currentStatus, 19)
     draw.text((5, 104), '{}'.format(wrappedStatus), font=smallfont, fill=0)
-
-
 
     mask.paste(sixhours, (2, 153))
     draw.text((22, 162), '{}'.format(next6hTemp), font=smallfont, fill=0)
@@ -189,35 +196,36 @@ def parseJsonAndDrawToMask():
 
     # Black fill line for actual rain
     rainh = [239 - (ra*10) for ra in rainAmount]
-    
+
     diagram_intervals = [
-        (10,19),
-        (24,33),
-        (38,47),
-        (52,61),
-        (66,75),
-        (80,90),
-        (94,103),
-        (108,117),
-        (122,131),
-        (136,145),
-        (150,159),
-        (164,173),
+        (10, 19),
+        (24, 33),
+        (38, 47),
+        (52, 61),
+        (66, 75),
+        (80, 90),
+        (94, 103),
+        (108, 117),
+        (122, 131),
+        (136, 145),
+        (150, 159),
+        (164, 173),
     ]
 
-    for rain_amount, interval in zip(rainh,diagram_intervals):
+    for rain_amount, interval in zip(rainh, diagram_intervals):
         for i in range(*interval):
-            draw.line((i,239,i,rain_amount), fill=0, width=1)
+            draw.line((i, 239, i, rain_amount), fill=0, width=1)
 
     # Only outline for maximum possible rain
     # rainMaxH = [239 - (max_rain*10) for max_rain in rainMaxAmount]
     rainMaxH = map(lambda x: 239 - (x*10), rainMaxAmount)
 
-    for rain_max, interval in zip(rainMaxH,diagram_intervals):
+    for rain_max, interval in zip(rainMaxH, diagram_intervals):
         draw.line((interval[0], 239, interval[0], rain_max), fill=0, width=1)
         draw.line((interval[0], 239, interval[1], 239), fill=0, width=1)
         draw.line((interval[1], 239, interval[1], rain_max), fill=0, width=1)
-        draw.line((interval[0], rain_max, interval[1], rain_max), fill=0, width=1)
+        draw.line((interval[0], rain_max, interval[1],
+                  rain_max), fill=0, width=1)
 
     mask.paste(windIcon, (0, 248))
     mask.paste(rainLine, (8, 240))
@@ -225,15 +233,16 @@ def parseJsonAndDrawToMask():
     draw.text((43, 244), '{}-{} m/s'.format(windSpeed, windMaxGust),
               font=smallfont, fill=0)
 
-
-    print(('Successfully parsed json file and created mask. {}'.format(time.strftime('%d%m%y-%H:%M:%S'))))
+    print(('Successfully parsed json file and created mask. {}'.format(
+        time.strftime('%d%m%y-%H:%M:%S'))))
     # epd.display_frame(epd.get_frame_buffer(mask))
 
     # Turns mask upside down, this just happened to work best for my frame
     # with regards to which side the cable came out.
     rotatedMask = mask.rotate(180)
     epd.display_frame(epd.get_frame_buffer(rotatedMask))
-    print(('Weather display successfully refreshed at {}'.format(time.strftime('%d%m%y-%H:%M:%S'))))
+    print(('Weather display successfully refreshed at {}'.format(
+        time.strftime('%d%m%y-%H:%M:%S'))))
 
 
 # def printMaskToEinkScreen():
@@ -249,6 +258,7 @@ def setUpErrorLogging():
 
 def logError(e):
     logging.error("{} ({}): {}".format(e.__class__, e.__doc__, e.message))
+
 
 if __name__ == '__main__':
     setUpErrorLogging()
