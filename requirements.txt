@@ -1,0 +1,4 @@
+ + Raspberry Pi 3
+ + Waveshare 2.7 inch e-paper display
+ + Atleast 4GiB sd card with Raspberry Pi OS installed
+ 
